@@ -1,0 +1,426 @@
+---
+title: "Task 3 Sample analysis"
+author: "Will Wright"
+format: 
+  html:
+    code-fold: false
+    theme: cosmos
+---
+
+In this notebook, I run through the climate change analysis for abundance, using the model made in Task 2.
+
+# Helper functions
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "helper_functions"
+#| code-fold: true
+get_climate_predictions <- function(
+  wetland,
+  model,
+  spp_code = NULL,
+  fx_group = NULL,
+  flow_metadata = combined_flow_metadata,
+  climate_projections = valley_climate_projections_with_wetlands,
+  basin_flow_stats = basin_flow_mean_sd
+) {
+  # --- Pre-processing -------------------------------------------------------
+  scaling <- combined_flow_metadata |>
+    filter(wetlands == wetland) |>
+    slice(1) |>
+    select(
+      wetland_mean_flow_3m,
+      wetland_sd_flow_3m,
+      wetland_mean_flow_annual,
+      wetland_sd_flow_annual
+    )
+
+  # --- Build scenario newdata -----------------------------------------------
+  nuisance_vars <- c(
+    "asset_precip_3m_scaled",
+    "asset_precip_annual_scaled",
+    "asset_precip_annual_scaled_lagged",
+    "valley_precip_3m_scaled",
+    "valley_precip_annual_scaled",
+    "valley_precip_annual_scaled_lagged",
+    "basin_precip_3m_scaled",
+    "basin_precip_annual_scaled",
+    "basin_precip_annual_scaled_lagged",
+    "swc_australia_scaled",
+    "swc_australia_scaled_lagged"
+  )
+
+  scenarios <- valley_climate_projections_with_wetlands |>
+    filter(Wetland == wetland) |>
+    arrange(Scenario) |>
+    select(Scenario, pct_change) |>
+    left_join(
+      basin_flow_mean_sd |>
+        select(Scenario, basin_flow_zscore_3m, basin_flow_zscore_annual),
+      by = "Scenario"
+    ) |>
+    mutate(
+      wetland_flow_3m_scaled = (scaling$wetland_mean_flow_3m * pct_change) /
+        scaling$wetland_sd_flow_3m,
+      wetland_flow_annual_scaled = (scaling$wetland_mean_flow_annual *
+        pct_change) /
+        scaling$wetland_sd_flow_annual,
+      wetland_flow_annual_scaled_lagged = wetland_flow_annual_scaled,
+      total_basin_flow_3m_scaled = basin_flow_zscore_3m,
+      total_basin_flow_annual_scaled = basin_flow_zscore_annual,
+      total_basin_flow_annual_scaled_lagged = basin_flow_zscore_annual,
+      Wetland = wetland
+    ) |>
+    select(-basin_flow_zscore_3m, -basin_flow_zscore_annual)
+
+  pred_newdata <- bind_rows(
+    tibble(
+      Scenario = "Baseline",
+      pct_change = NA_real_,
+      wetland_flow_3m_scaled = 0,
+      wetland_flow_annual_scaled = 0,
+      wetland_flow_annual_scaled_lagged = 0,
+      total_basin_flow_3m_scaled = 0,
+      total_basin_flow_annual_scaled = 0,
+      total_basin_flow_annual_scaled_lagged = 0,
+      Wetland = wetland
+    ),
+    scenarios
+  )
+
+  pred_newdata[nuisance_vars] <- 0
+
+  if (!is.null(spp_code)) {
+    pred_newdata$spp_code <- spp_code
+  }
+  if (!is.null(fx_group)) {
+    pred_newdata$fx_group <- fx_group
+  }
+
+  # --- Posterior draws ------------------------------------------------------
+  draws <- posterior_epred(model, newdata = pred_newdata, re_formula = NULL) |>
+    t() |>
+    as_tibble() |>
+    mutate(scenario = pred_newdata$Scenario) |>
+    pivot_longer(-scenario, names_to = ".draw", values_to = ".value")
+
+  # --- Percent change (shared computation) ----------------------------------
+  draws_with_pct <- draws |>
+    group_by(.draw) |>
+    mutate(
+      baseline_val = .value[scenario == "Baseline"],
+      percent_change = (.value - baseline_val) / baseline_val * 100
+    ) |>
+    ungroup()
+
+  
+
+  summary_results <- draws_with_pct |>
+    group_by(scenario) |>
+    median_hdci(percent_change, .value) |>
+    mutate(wetland_name = wetland)
+  if (!is.null(spp_code)) {
+    summary_results$spp_code <- spp_code
+  }
+  if (!is.null(fx_group)) {
+    summary_results$fx_group <- fx_group
+  }
+  list(
+    summary = summary_results
+  )
+}
+```
+
+# Libraries and data 
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "libraries"
+#| code-fold: true
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(eawsAnalysis)
+library(sf)
+library(brms)
+library(tidybayes)
+library(patchwork)
+```
+
+
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "Load data"
+#| code-fold: true
+valley_climate_projections_with_wetlands <- read.csv("data/valley_climate_projections_with_wetlands.csv") |> 
+    na.omit() # Scalars for each wetland, based on the valley it is located in for each climate scenario
+
+combined_flow_metadata <- read.csv("data/combined_flow_metadata.csv") # This is the mean and sd for every wetland, based on the scaling we did for the models
+
+basin_flow_mean_sd <- read.csv("data/basin_flow_mean_sd.csv") # This is the mean and sd for the basin flow, which we use for scaling the basin flow variables in the climate data
+data(assets)
+assets_coords <- assets %>%
+  # Ensure we have the center point of each polygon
+  mutate(centroid_lat = st_coordinates(st_centroid(geom))[, 2]) %>%
+  st_drop_geometry() %>%
+  # Sort by latitude descending (North to South)
+  arrange(desc(centroid_lat)) %>%
+  pull(Wetland) %>%
+  str_to_lower()
+
+```
+
+# Walk through for one wetland
+
+We get the first wetland, and load in the model
+```{r}
+#| message: false
+#| warning: false
+#| label: "load_model"
+wetlands <- valley_climate_projections_with_wetlands |> 
+  pull(Wetland) %>%
+  unique() 
+wetland <- wetlands[1]
+overall_abund <- readr::read_rds("data/m1.1.rds")
+print(paste0("Wetland: ", wetland))
+```
+
+Get the scaling factors for that wetland (mean and sd), because we scaled the input variables on a wetland basis. 
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "scaling"
+scaling <- combined_flow_metadata |>
+    filter(wetlands == wetland) |>
+    slice(1) |>
+    select(
+      wetland_mean_flow_3m,
+      wetland_sd_flow_3m,
+      wetland_mean_flow_annual,
+      wetland_sd_flow_annual
+    )
+glimpse(scaling)
+```
+
+Scale the predictors by the appropriate climate scalars, and then convert to z-scores using the wetland-specific mean and sd. We also add in the basin flow z-scores, which are used as predictors in the model, and are scaled using the mean and sd from the `basin_flow_mean_sd` dataset.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "scenarios"
+#| code-fold: true
+
+scenarios <- valley_climate_projections_with_wetlands |>
+    filter(Wetland == wetland) |>
+    arrange(Scenario) |>
+    select(Scenario, pct_change) |>
+    left_join(
+      basin_flow_mean_sd |>
+        select(Scenario, basin_flow_zscore_3m, basin_flow_zscore_annual),
+      by = "Scenario"
+    ) |>
+    mutate(
+      wetland_flow_3m_scaled = (scaling$wetland_mean_flow_3m * pct_change) /
+        scaling$wetland_sd_flow_3m,
+      wetland_flow_annual_scaled = (scaling$wetland_mean_flow_annual *
+        pct_change) /
+        scaling$wetland_sd_flow_annual,
+      wetland_flow_annual_scaled_lagged = wetland_flow_annual_scaled,
+      total_basin_flow_3m_scaled = basin_flow_zscore_3m,
+      total_basin_flow_annual_scaled = basin_flow_zscore_annual,
+      total_basin_flow_annual_scaled_lagged = basin_flow_zscore_annual,
+      Wetland = wetland
+    ) |>
+    select(-basin_flow_zscore_3m, -basin_flow_zscore_annual)
+```
+
+
+Build the new data for predicting on. We set all the target flow variables for the baseline scenario to 0 (the mean), and then add in the scaled flow variables for the scenarios. We also set all the other variables to 0 (mean).
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "predictors"
+#| code-fold: true
+nuisance_vars <- c(
+    "asset_precip_3m_scaled",
+    "asset_precip_annual_scaled",
+    "asset_precip_annual_scaled_lagged",
+    "valley_precip_3m_scaled",
+    "valley_precip_annual_scaled",
+    "valley_precip_annual_scaled_lagged",
+    "basin_precip_3m_scaled",
+    "basin_precip_annual_scaled",
+    "basin_precip_annual_scaled_lagged",
+    "swc_australia_scaled",
+    "swc_australia_scaled_lagged"
+  )
+
+pred_newdata <- bind_rows(
+    tibble(
+        Scenario = "Baseline",
+        pct_change = NA_real_,
+        wetland_flow_3m_scaled = 0,
+        wetland_flow_annual_scaled = 0,
+        wetland_flow_annual_scaled_lagged = 0,
+        total_basin_flow_3m_scaled = 0,
+        total_basin_flow_annual_scaled = 0,
+        total_basin_flow_annual_scaled_lagged = 0,
+        Wetland = wetland
+    ),
+    scenarios
+)
+
+pred_newdata[nuisance_vars] <- 0
+glimpse(pred_newdata)
+
+```
+
+Now we predict. We use `posterior_epred()`, not `posterior_predict()` to eliminate noise from residuals, and just focus on the estimate for the expected value.  
+We also calculate the estimated percent change from the baseline.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "predictions"
+model <- overall_abund
+draws <- posterior_epred(model, newdata = pred_newdata, re_formula = NULL) |>
+    t() |>
+    as_tibble() |>
+    mutate(scenario = pred_newdata$Scenario) |>
+    pivot_longer(-scenario, names_to = ".draw", values_to = ".value")
+
+draws_with_pct <- draws |>
+    group_by(.draw) |>
+    mutate(
+      baseline_val = .value[scenario == "Baseline"],
+      percent_change = (.value - baseline_val) / baseline_val * 100
+    ) |>
+    ungroup()
+
+  
+
+summary_results <- draws_with_pct |>
+    group_by(scenario) |>
+    median_hdci(percent_change, .value) |>
+    mutate(wetland_name = wetland)
+summary_results
+
+DT::datatable(
+  summary_results,
+  options = list(
+    pageLength = 7,
+    autoWidth = TRUE,
+    scrollX = TRUE,
+    dom = 'lrtip'  # Remove the filter box if you want more compact layout
+  ),
+  class = 'compact stripe'
+) |> 
+     DT::formatStyle( 0, target= 'row',lineHeight='70%') |> 
+     DT::formatRound(columns = c("percent_change", "percent_change.lower", "percent_change.upper", ".value", ".value.lower", ".value.upper"), digits = 2) 
+```
+
+Make a plot to show the results (up to you how you want to visualise)
+```{r}
+#| message: false
+#| warning: false
+#| label: "plot"
+p1 <- ggplot(summary_results |> filter(scenario != "Baseline") |> mutate(scenario = factor(scenario, levels = c("S1", "S4", "S2", "S5", "S3", "S6"))), aes(x = scenario, y = percent_change)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = percent_change.lower, ymax = percent_change.upper), width = 0.2) +
+    labs(
+        x = "Climate Scenario",
+        y = "Percent Change from Baseline"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+p2 <- ggplot(summary_results  |> mutate(scenario = factor(scenario, levels = c("Baseline", "S1", "S4", "S2", "S5", "S3", "S6"))), aes(x = scenario, y = .value)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = .value.lower, ymax = .value.upper), width = 0.2) +
+    labs(
+        x = "Climate Scenario",
+        y = "Absolute Change"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p1+p2
+```
+
+
+# All wetlands
+We wrap this all in a function - `get_climate_predictions()` and loop through the wetlands
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "all_wetlands"
+
+wetlands <- valley_climate_projections_with_wetlands |> 
+  pull(Wetland) %>%
+  unique() 
+
+overall_abund <- readRDS("data/m1.1.rds")
+results <- vector("list", length(wetlands))
+
+for (i in 1:length(wetlands)) {
+  # print(wetlands[i])
+  
+  results[[i]] <- get_climate_predictions(
+    wetland = wetlands[i],
+    model = overall_abund
+  )
+}
+
+combined_df_overall <- purrr::map(results, "summary") %>% 
+  bind_rows()
+```
+
+Plots like this are in the report, but you can make your own visualisation if you want.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "plot_all_wetlands"
+#| fig-width: 20
+#| fig-height: 12
+ggplot2::ggplot() +
+    ggplot2::geom_pointrange(
+  data = combined_df_overall |> filter(scenario != "Baseline") |> mutate(scenario = factor(scenario, levels = c("S1", "S4", "S2", "S5", "S3", "S6")), wetland_name = factor(wetland_name, levels = rev(assets_coords))),
+  ggplot2::aes(
+  x = percent_change,
+  xmin = percent_change.lower,
+  xmax = percent_change.upper,
+  y = wetland_name
+  ),
+  # shape = 17,
+  # size = 7
+  ) +
+    facet_wrap(~scenario, nrow = 1, scales = "free_x",labeller = ggplot2::label_wrap_gen(width = 18)) +
+  ggplot2::geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
+  ggplot2::geom_hline(yintercept = 22.5, color = "black", size = 0.5, linetype = "dashed", alpha = 0.8) +
+  ggplot2::scale_y_discrete(
+    labels = str_to_title
+  ) +
+  my_theme() +
+  ggplot2::labs(
+  x = "Percent change",
+  y = "Asset"
+  ) +
+  ggplot2::theme(
+  axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+  panel.spacing = ggplot2::unit(2, "lines"),
+  panel.background = ggplot2::element_rect(fill = "#F2F2F2"),
+  plot.subtitle = ggplot2::element_text(size = 14),
+  axis.text.y = ggtext::element_markdown(size = 24),
+  legend.position = "none"
+  ) 
+
+```
+

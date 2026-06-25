@@ -1,0 +1,33 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "waterbirds-workshop"
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - text: "Home"
+        href: index.qmd
+      - text: "Extract waterbird data and perform trend analysis"
+        href: trend_analysis.qmd
+        
+      - text: "Make models"
+        href: make_model.qmd
+      - text: "Climate predictions"
+        href: climate.qmd
+      - text: "Macquarie Marshes e-flow analysis"
+        href: eflow.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+    df-print: tibble
+
+
+

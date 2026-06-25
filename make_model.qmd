@@ -1,0 +1,573 @@
+---
+title: "Task 2 Sample analysis"
+author: "Will Wright"
+format: 
+  html:
+    code-fold: false
+    theme: cosmos
+---
+
+In this notebook, I'll run through the analysis for task 2 - specifically, wetland abundance drivers for the MDBAS wetlands. Similar (though not identical) analyses were run for other data subsets.
+
+## Themes and formatting
+
+```{r}
+#| code-fold: true
+#| label: "Themes and formatting"
+#| 
+my_theme <- function(title_size = 22, text_size = 20, ...) {
+  theme_bw() +
+    theme(
+      plot.title = element_text(
+        size = 22,
+        face = "bold",
+        colour = "black",
+        family = "tachoma"
+      ),
+      strip.text = element_text(size = text_size),
+      strip.background.x = element_rect(fill = "white", colour = "black"),
+      axis.text = element_text(size = text_size, colour = "black"),
+      axis.title = element_text(size = title_size, colour = "black"),
+      legend.title = element_text(size = title_size, colour = "black"),
+      legend.text = element_text(size = text_size, colour = "black"),
+      ...
+    )
+}
+
+# Set custom palette. From MetBrewer::met.brewer("Johnson")
+bayesplot::color_scheme_set(c(
+  "grey30",
+  "#d04e00",
+  "#a00e00",
+  "#f6c200",
+  "#132b69",
+  "#0086a8"
+))
+
+make_plot <- function(model, is_hu = TRUE, response_var) {
+  direction <- describe_posterior(
+    model,
+    component = "conditional",
+    rope_ci = 1,
+    as_p = TRUE
+  ) |>
+    mutate(component = response_var)
+  if (is_hu) {
+    hurdle_dir <- describe_posterior(
+      model,
+      component = "distributional",
+      rope_ci = 1,
+      rope_range = c(-0.18, 0.18),
+      as_p = TRUE
+    ) %>%
+      mutate(component = "Hurdle")
+
+    # FLIP THE MEDIAN for the hurdle component so direction (p/n/u) matches Presence Probability
+    hurdle_dir <- hurdle_dir %>%
+      mutate(
+        Median = if_else(str_detect(Parameter, "^b_hu_"), Median * -1, Median)
+      )
+
+    direction <- direction %>% bind_rows(hurdle_dir)
+  }
+  direction <- direction %>%
+    mutate(
+      direction = case_when(
+        ROPE_Percentage < 0.025 & Median > 0 ~ "p",
+        ROPE_Percentage < 0.025 & Median < 0 ~ "n",
+        TRUE ~ "u"
+      )
+    )
+
+  drws <- model %>%
+    gather_draws(`b_.*`, regex = TRUE) %>%
+    filter(!str_detect(.variable, "Intercept"))
+  new_drws <- drws %>%
+    left_join(direction, by = c(".variable" = "Parameter")) %>%
+    mutate(
+      is_hurdle = str_detect(.variable, "hu_"),
+      component = if_else(is_hurdle, "Hurdle", response_var) |>
+        factor(levels = c(response_var, "Hurdle")),
+      .value = if_else(is_hurdle, .value * -1, .value),
+      .value = exp(.value),
+      variable_clean = str_replace(.variable, "b_hu_", ""),
+      variable_clean = str_replace(variable_clean, "b_", "") %>%
+        str_replace_all("_", " ") %>%
+        str_to_sentence()
+    )
+  new_drws <- new_drws %>%
+    mutate(direction = factor(direction, levels = c("u", "p", "n")))
+
+  intervals <- new_drws %>%
+    group_by(variable_clean, component, direction) %>%
+    median_qi(.value, .width = c(0.5, 0.8, 0.95)) %>%
+    mutate(colour_group = paste(direction, .width, sep = "_")) %>%
+    arrange(desc(.width))
+
+  ggplot(intervals, aes(y = variable_clean, colour = colour_group)) +
+    geom_linerange(
+      aes(xmin = .lower, xmax = .upper),
+      linewidth = 3,
+      position = position_dodge(width = 0)
+    ) +
+    scale_colour_manual(
+      values = c(
+        "u_0.95" = "grey85",
+        "u_0.8" = "grey60",
+        "u_0.5" = "grey30",
+        "p_0.95" = "#a1d99b",
+        "p_0.8" = "#41ab5d",
+        "p_0.5" = "#006d2c",
+        "n_0.95" = "#fc9272",
+        "n_0.8" = "#ef3b2c",
+        "n_0.5" = "#99000d"
+      )
+    ) +
+    geom_vline(xintercept = 1, linetype = "dashed", alpha = 0.5) +
+    facet_wrap(~component, scales = "free_x") +
+    scale_y_discrete(drop = TRUE) +
+    scale_x_log10(
+      breaks = scales::breaks_log()
+    ) +
+    labs(
+      x = "Posterior Estimate (Odds ratio for hurdle, rate ratio for count)",
+      y = "Predictor Variable"
+    ) +
+    my_theme(legend.position = "none")
+}
+
+
+make_table <- function(model, is_hu = TRUE, as_text = FALSE) {
+  
+  direction <- describe_posterior(
+    model,
+    component = "conditional",
+    rope_ci = 1
+  ) |>
+    mutate(component = "Count")
+
+  if (is_hu) {
+    direction <- direction |>
+      bind_rows(
+        describe_posterior(
+          model,
+          component = "distributional",
+          rope_ci = 1,
+          rope_range = c(-0.18, 0.18)
+        ) |>
+          mutate(component = "Hurdle") # Updated Label
+      )
+  }
+  direction_clean <- direction %>%
+    mutate(
+      is_hurdle = str_detect(Parameter, "^b_hu_"),
+      Median = if_else(is_hurdle, Median * -1, Median),
+      orig_low = CI_low,
+      CI_low = if_else(is_hurdle, CI_high * -1, CI_low),
+      CI_high = if_else(is_hurdle, orig_low * -1, CI_high),
+      pd_pct = pd * 100,
+      ROPE_Percentage = ROPE_Percentage * 100,
+      Median = exp(Median),
+      CI_low = exp(CI_low),
+      CI_high = exp(CI_high),
+      `95% Credible Interval` = sprintf("[%.2f, %.2f]", CI_low, CI_high),
+      In_Text_Report = sprintf(
+        "(pd = %.1f%%, CI = [%.2f, %.2f], inside ROPE = %.1f%%)",
+        pd_pct,
+        CI_low,
+        CI_high,
+        ROPE_Percentage
+      ),
+      clean_raw = str_remove_all(Parameter, "^b_hu_|^b_"),
+
+      variable_raw = if_else(
+        str_detect(clean_raw, ":"),
+        str_extract(clean_raw, ":.*$") |> str_remove(":"),
+        clean_raw
+      ),
+
+      Clean_Parameter = variable_raw %>%
+        str_remove_all("_scaled") %>%
+        str_replace_all("_", " ") %>%
+        str_replace_all("precip", "Precipitation") %>%
+        str_replace_all("swc australia", "Surface water (Australia)") %>%
+        str_to_title() %>%
+        str_replace_all("3m", "(3-Month)") %>%
+        str_replace_all("6m", "(6-Month)") %>%
+        str_replace_all("Annual", "Annual") %>%
+        str_replace_all("Lagged", "Lagged")
+    ) %>%
+    filter(
+      !(variable_raw |> str_detect("Intercept"))
+    ) |>
+
+    # Clean up component naming conventions from bayestestR
+    arrange(component, Clean_Parameter)
+  # 3. Clean, merge, and parse names
+
+  if (as_text) {
+    final_df <- direction_clean %>%
+      select(
+        component,
+        Clean_Parameter,
+        Median,
+        `95% Credible Interval`,
+        pd_pct,
+        Rhat,
+        ROPE_Percentage,
+        In_Text_Report
+      )
+  } else {
+    final_df <- direction_clean %>%
+      select(
+        component,
+        Clean_Parameter,
+        Median,
+        `95% Credible Interval`,
+        pd_pct,
+        Rhat,
+        ROPE_Percentage
+      )
+  }
+
+  # 4. Generate the nested Flextable layout
+  ft <- final_df %>%
+    flextable() %>%
+    theme_zebra() %>%
+
+    # Structural Formatting: Vertically merge matching consecutive rows
+    # merge_v(j = c("component", "Functional_Group")) %>%
+
+    # Clean up borders on the merged elements for visual clarity
+    # fix_border_issues() %>%
+    autofit() %>%
+
+    # Standard formatting adjustments
+    align(
+      j = c(
+        "Median",
+        "95% Credible Interval",
+        "pd_pct",
+        "Rhat",
+        "ROPE_Percentage"
+      ),
+      align = "center",
+      part = "body"
+    ) %>%
+    colformat_double(j = "Median", digits = 2) %>%
+    colformat_double(j = "pd_pct", digits = 1) %>%
+    colformat_double(j = "ROPE_Percentage", digits = 1) %>%
+    colformat_double(j = "Rhat", digits = 3) %>%
+
+    set_header_labels(
+      component = "Model component",
+      Clean_Parameter = "Environmental Predictor",
+      Median = "Posterior Median",
+      pd_pct = "pd (%)",
+      Rhat = "Rhat",
+      ROPE_Percentage = "ROPE (%)"
+    ) %>%
+
+    # Bold predictors with strong overlapping signals (outside ROPE)
+    bold(i = ~ ROPE_Percentage < 2.5)
+
+  # Return both visual table and programmatic raw data frames
+  return(list(table = ft, data = direction_clean))
+}
+```
+
+## Load libraries and data
+
+I have omitted the code for cleaning because it is very long, and just read in the final dataframes here - check the GitHub, or methods section of the report, for details.
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| label: "Load libraries and data"
+
+# libraries
+library(data.table)
+library(brms)
+# need to install this with install.packages("cmdstanr", repos = c('https://stan-dev.r-universe.dev', getOption("repos")))
+library(cmdstanr)
+# and also this, if you haven't run it already install_cmdstan()
+library(eawsAnalysis) 
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(bayestestR)
+library(tidybayes)
+library(flextable)
+my_theme <- function(title_size = 22, text_size = 20, ...) {
+  theme_bw() +
+    theme(
+      plot.title = element_text(
+        size = 22,
+        face = "bold",
+        colour = "black",
+        family = "tachoma"
+      ),
+      strip.text = element_text(size = text_size),
+      strip.background.x = element_rect(fill = "white", colour = "black"),
+      axis.text = element_text(size = text_size, colour = "black"),
+      axis.title = element_text(size = title_size, colour = "black"),
+      legend.title = element_text(size = title_size, colour = "black"),
+      legend.text = element_text(size = text_size, colour = "black"),
+      ...
+    )
+}
+
+#Spatial data
+wetlands_with_valleys <- read.csv("data/wetlands_with_valleys.csv") 
+
+
+# Rainfall data
+asset_precip <- read.csv("data/asset_precip_data.csv")
+valley_precip <- read.csv("data/valley_precip_data.csv")
+precip <- read.csv("data/precip_data.csv")
+
+# SWC (flooding) data
+swc <- read.csv("data/australia_annual_water_area_presence.csv")
+wetlands_swc <- read.csv("data/wetland_inundation_results.csv")
+basin_swc <- read.csv("data/basin_inundation_results.csv") 
+valleys_swc <- read.csv("data/valley_inundation_results.csv")
+
+# Flow data
+combined_flow_data <- read.csv("data/combined_flow_data.csv")
+total_flow <- read.csv("data/total_flow.csv")
+
+set.seed(123) 
+
+
+# Waterbird data
+data(data_clean)
+# glimpse(data_clean)
+
+```
+
+## Analysis workflow
+
+### Loading and cleaning data
+
+First, we load in data using the `get_bird_data()` function from the `eawsAnalysis` package.
+
+```{r}
+#| label: Load data
+d <-
+  get_bird_data(
+    data_clean , # subset so that only years with all wetlands are included
+    programs = c("MDB Combined"),
+    metric = "abundance",
+    wetlands = NULL,
+    valleys = NULL,
+    basinDiv = NULL,
+    grouping_cols = 'Wetland'
+  )
+glimpse(d)
+
+
+```
+
+### Add in environmental data
+
+Here we add in the environmental variables that correspond with the analysis. Because this is the wetland scale, we add in all of the environmental variables.
+
+```{r}
+#| label: Add env data
+#| message: false
+#| warning: false
+#| code-fold: true
+full_data <- d %>%
+  left_join(
+    asset_precip %>% mutate(Wetland = str_to_lower(Wetland)),
+    join_by(surv_year == year, Wetland == Wetland)
+  ) %>%
+  left_join(wetlands_with_valleys) %>%
+  mutate(ValleyName = str_to_lower(ValleyName)) %>%
+  left_join(
+    valley_precip,
+    join_by(surv_year == year, ValleyName == valleyname)
+  ) %>%
+  left_join(precip, by = join_by("surv_year" == "year")) %>%
+  left_join(
+    combined_flow_data,
+    by = join_by("surv_year" == "water_year", Wetland == wetlands)
+  ) %>%
+  filter(
+    !is.na(wetland_flow_annual_scaled)
+  ) %>%
+  left_join(total_flow, by = join_by("surv_year" == "water_year")) %>%
+  left_join(swc, join_by('surv_year' == "year")) %>%
+  left_join(
+    valleys_swc,
+    join_by('surv_year' == "year", ValleyName == valley_name)
+  ) %>%
+  left_join(
+    wetlands_swc,
+    join_by('surv_year' == "year", Wetland == wetland_name)
+  ) %>%
+  left_join(basin_swc, join_by('surv_year' == "year")) %>%
+  select(
+    -c(subwetland,asset_precip_3m,asset_precip,X,valley_precip_3m,valley_precip,basin_precip_3m,basin_precip,flow_3m,flow,water_area_m2,inundated_area,inundated_area.x,inundated_area.y
+    )
+  ) %>%
+  mutate(id = row_number())
+
+
+```
+
+### Run models
+
+First, we need to set formula for the model, set the priors, and perform a prior predictive check. The models for this analysis are (almost) all hurdle models. This means that in effect, we run two models here. First, a binary model to predict presence/absence of birds, and second, a model to predict abundance when birds are present. I recommend this [blog](https://www.andrewheiss.com/blog/2022/05/09/hurdle-lognormal-gaussian-brms/) for more details on hurdle models in `brms`, or Chapter 11 of [Statistical Rethinking](https://doi.org/10.1201/9780429029608), which covers zero-inflated models (somewhat similar) in more technical detail.
+
+#### Set formula
+
+```{r}
+#| code-fold: true
+#| label: "Set model formula"
+full_formula <- brmsformula(
+  value ~ asset_precip_3m_scaled + asset_precip_annual_scaled + asset_precip_annual_scaled_lagged + 
+    valley_precip_3m_scaled +valley_precip_annual_scaled + valley_precip_annual_scaled_lagged + basin_precip_3m_scaled + basin_precip_annual_scaled + basin_precip_annual_scaled_lagged + 
+    wetland_flow_3m_scaled + wetland_flow_annual_scaled + wetland_flow_annual_scaled_lagged + 
+    total_basin_flow_3m_scaled + total_basin_flow_annual_scaled + total_basin_flow_annual_scaled_lagged + 
+    swc_australia_scaled + swc_australia_scaled_lagged +
+    (1 | Wetland), # random intercept for wetland
+  # Same formula for the hurdle component of the model. 
+  hu ~ asset_precip_3m_scaled + asset_precip_annual_scaled + asset_precip_annual_scaled_lagged + 
+    valley_precip_3m_scaled +valley_precip_annual_scaled + valley_precip_annual_scaled_lagged + 
+    basin_precip_3m_scaled + basin_precip_annual_scaled + basin_precip_annual_scaled_lagged + 
+    wetland_flow_3m_scaled +wetland_flow_annual_scaled + wetland_flow_annual_scaled_lagged + 
+    total_basin_flow_3m_scaled + total_basin_flow_annual_scaled + total_basin_flow_annual_scaled_lagged + swc_australia_scaled + swc_australia_scaled_lagged +
+    (1 | Wetland)
+)
+```
+
+#### Set priors
+
+I use weakly informative priors here, so that sampling is constrained to reasonable parameters (e.g. we know there are rarely 5 million birds at a wetland, and that birds cannot be negative), but not overly restrictive. See [here](https://doi.org/10.1002/ecs2.3739) and [here](https://doi.org/10.1111/rssa.12378)
+
+
+```{r}
+#| message: false
+#| warning: false
+#| output: false
+#| label: "Set priors"
+priors <- c(
+  set_prior(paste0("normal(", 9, ",", 1, ")"), class = "Intercept"),
+  set_prior(paste0("normal(", 0, ",", 0.1, ")"), class = "b"),
+  set_prior("exponential(2)", class = "shape"),
+  set_prior("normal(1, 1)", class = "Intercept", dpar = "hu"),
+  set_prior("normal(0, 0.1)", class = "b", dpar = "hu"),
+  set_prior("normal(0, 0.5)", class = "sd", lb = 0),
+  set_prior("normal(0, 0.5)", class = "sd", lb = 0, dpar = "hu")
+)
+
+
+m1.1_prior <- brm(
+  formula = full_formula,
+  family = hurdle_gamma(),
+  data = full_data,
+  backend = "cmdstanr",
+  cores = 4,
+  prior = priors,
+  sample_prior = "only"
+)
+
+```
+
+##### Prior predictive check
+Here, we want to see that data simulated with just the priors is reasonable, and broadly similar to the observed data. In this case, it's not really that reasonable, but we can see that the simulated datasets (orange) cover the range of the observed data (blue). I prefer priors that are wide rather than narrow, because they allow the data to have a bit more influence.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "Prior predictive check"
+pp_check(m1.1_prior, "boxplot") + my_theme()+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+#### Run model
+Now we run the model with the data
+```{r}
+#| message: false
+#| warning: false
+#| output: false
+#| label: "Run model"
+m1.1 <- brm(
+  full_formula,
+  family = hurdle_gamma(),
+  data = full_data,
+  backend = "cmdstanr",
+  cores = 4,
+  prior = priors,
+  chains = 4,
+  iter = 4000,
+  file = "data/m1.1.rds",
+  file_refit = "on_change"
+)
+
+```
+
+##### Model diagnostics
+We check the Rhat values (below 1.1), and ESS (above 1000). We can plot the MCMC chains to check for good mixing. (I don't run this here, because it takes a long time)
+```{r}
+#| eval: false
+#| label: "Model diagnostics"
+diagnostic_posterior(m1.1) 
+plot(m1.1)
+```
+
+We can do a visual inspection of the fit. We want the simulated data (orange) to be close to the observed data (blue). It does a pretty good job here. 
+```{r}
+#| message: false
+#| warning: false
+#| label: "Posterior predictive check"
+pp_check(m1.1, "boxplot")
+```
+
+We can also plot a density plot. Again, looks pretty good.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "Posterior predictive check - density"
+pp_check(m1.1, "dens_overlay")
+```
+
+We use Bayes R2 for checking model fit numerically. Not too bad
+```{r}
+#| message: false
+#| warning: false
+#| label: "Bayes R2"
+bayes_R2(m1.1)
+```
+
+### Get results
+We wrote a couple of helper functions for this - `make_plot` and `make_table` - which extract the relevant information from the model output, and make a nice plot and table of results.
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 16
+#| fig-height: 10
+#| label: "Make plot"
+make_plot(m1.1, is_hu = TRUE, response_var = "Abundance")
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| label: "Make table"
+output_tables <- make_table(m1.1, is_hu = TRUE, as_text = FALSE)
+DT::datatable(
+  output_tables$data,
+  options = list(
+    pageLength = 25,
+    autoWidth = TRUE,
+    scrollX = TRUE,
+    dom = 'lrtip'  # Remove the filter box if you want more compact layout
+  ),
+  class = 'compact stripe'
+) |> 
+     DT::formatStyle( 0, target= 'row',lineHeight='60%')
+```
+

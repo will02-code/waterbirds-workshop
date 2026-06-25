@@ -1,0 +1,203 @@
+Valley,Scenario,pct_change,X,Wetland
+Paroo,S1,0.15,9,currawinya lakes
+Paroo,S1,0.15,10,cuttaburra channels
+Paroo,S1,0.15,33,paroo overflow lakes complex
+Paroo,S1,0.15,39,yantabulla
+Paroo,S4,0.22,9,currawinya lakes
+Paroo,S4,0.22,10,cuttaburra channels
+Paroo,S4,0.22,33,paroo overflow lakes complex
+Paroo,S4,0.22,39,yantabulla
+Paroo,S2,-0.02,9,currawinya lakes
+Paroo,S2,-0.02,10,cuttaburra channels
+Paroo,S2,-0.02,33,paroo overflow lakes complex
+Paroo,S2,-0.02,39,yantabulla
+Paroo,S5,-0.03,9,currawinya lakes
+Paroo,S5,-0.03,10,cuttaburra channels
+Paroo,S5,-0.03,33,paroo overflow lakes complex
+Paroo,S5,-0.03,39,yantabulla
+Paroo,S3,-0.15,9,currawinya lakes
+Paroo,S3,-0.15,10,cuttaburra channels
+Paroo,S3,-0.15,33,paroo overflow lakes complex
+Paroo,S3,-0.15,39,yantabulla
+Paroo,S6,-0.22,9,currawinya lakes
+Paroo,S6,-0.22,10,cuttaburra channels
+Paroo,S6,-0.22,33,paroo overflow lakes complex
+Paroo,S6,-0.22,39,yantabulla
+Warrego,S1,0.16,37,upper darling river
+Warrego,S4,0.23,37,upper darling river
+Warrego,S2,-0.01,37,upper darling river
+Warrego,S5,-0.02,37,upper darling river
+Warrego,S3,-0.14,37,upper darling river
+Warrego,S6,-0.22,37,upper darling river
+Condamine,S1,0.15,31,narran lakes
+Condamine,S4,0.23,31,narran lakes
+Condamine,S2,-0.02,31,narran lakes
+Condamine,S5,-0.03,31,narran lakes
+Condamine,S3,-0.15,31,narran lakes
+Condamine,S6,-0.23,31,narran lakes
+Gwydir,S1,0.12,14,gwydir wetlands
+Gwydir,S4,0.18,14,gwydir wetlands
+Gwydir,S2,-0.04,14,gwydir wetlands
+Gwydir,S5,-0.07,14,gwydir wetlands
+Gwydir,S3,-0.16,14,gwydir wetlands
+Gwydir,S6,-0.24,14,gwydir wetlands
+Macquarie,S1,0.1,27,macquarie marshes
+Macquarie,S4,0.16,27,macquarie marshes
+Macquarie,S2,-0.07,27,macquarie marshes
+Macquarie,S5,-0.1,27,macquarie marshes
+Macquarie,S3,-0.18,27,macquarie marshes
+Macquarie,S6,-0.27,27,macquarie marshes
+Darling,S1,0.13,11,darling anabranch
+Darling,S1,0.13,28,menindee lakes
+Darling,S1,0.13,36,talywalka system
+Darling,S4,0.2,11,darling anabranch
+Darling,S4,0.2,28,menindee lakes
+Darling,S4,0.2,36,talywalka system
+Darling,S2,-0.05,11,darling anabranch
+Darling,S2,-0.05,28,menindee lakes
+Darling,S2,-0.05,36,talywalka system
+Darling,S5,-0.07,11,darling anabranch
+Darling,S5,-0.07,28,menindee lakes
+Darling,S5,-0.07,36,talywalka system
+Darling,S3,-0.17,11,darling anabranch
+Darling,S3,-0.17,28,menindee lakes
+Darling,S3,-0.17,36,talywalka system
+Darling,S6,-0.25,11,darling anabranch
+Darling,S6,-0.25,28,menindee lakes
+Darling,S6,-0.25,36,talywalka system
+Lachlan,S1,0.01,3,booligal wetlands
+Lachlan,S1,0.01,12,great cumbung swamp
+Lachlan,S1,0.01,19,lake brewster
+Lachlan,S1,0.01,21,lake cowal and nerang cowal
+Lachlan,S4,0.02,3,booligal wetlands
+Lachlan,S4,0.02,12,great cumbung swamp
+Lachlan,S4,0.02,19,lake brewster
+Lachlan,S4,0.02,21,lake cowal and nerang cowal
+Lachlan,S2,-0.1,3,booligal wetlands
+Lachlan,S2,-0.1,12,great cumbung swamp
+Lachlan,S2,-0.1,19,lake brewster
+Lachlan,S2,-0.1,21,lake cowal and nerang cowal
+Lachlan,S5,-0.15,3,booligal wetlands
+Lachlan,S5,-0.15,12,great cumbung swamp
+Lachlan,S5,-0.15,19,lake brewster
+Lachlan,S5,-0.15,21,lake cowal and nerang cowal
+Lachlan,S3,-0.19,3,booligal wetlands
+Lachlan,S3,-0.19,12,great cumbung swamp
+Lachlan,S3,-0.19,19,lake brewster
+Lachlan,S3,-0.19,21,lake cowal and nerang cowal
+Lachlan,S6,-0.29,3,booligal wetlands
+Lachlan,S6,-0.29,12,great cumbung swamp
+Lachlan,S6,-0.29,19,lake brewster
+Lachlan,S6,-0.29,21,lake cowal and nerang cowal
+Wimmera,S1,0.01,18,lake albacutya
+Wimmera,S1,0.01,22,lake hindmarsh
+Wimmera,S4,0.01,18,lake albacutya
+Wimmera,S4,0.01,22,lake hindmarsh
+Wimmera,S2,-0.09,18,lake albacutya
+Wimmera,S2,-0.09,22,lake hindmarsh
+Wimmera,S5,-0.14,18,lake albacutya
+Wimmera,S5,-0.14,22,lake hindmarsh
+Wimmera,S3,-0.18,18,lake albacutya
+Wimmera,S3,-0.18,22,lake hindmarsh
+Wimmera,S6,-0.28,18,lake albacutya
+Wimmera,S6,-0.28,22,lake hindmarsh
+Murrumbidgee,S1,0.02,25,lowbidgee floodplain
+Murrumbidgee,S1,0.02,40,fivebough
+Murrumbidgee,S4,0.02,25,lowbidgee floodplain
+Murrumbidgee,S4,0.02,40,fivebough
+Murrumbidgee,S2,-0.08,25,lowbidgee floodplain
+Murrumbidgee,S2,-0.08,40,fivebough
+Murrumbidgee,S5,-0.13,25,lowbidgee floodplain
+Murrumbidgee,S5,-0.13,40,fivebough
+Murrumbidgee,S3,-0.18,25,lowbidgee floodplain
+Murrumbidgee,S3,-0.18,40,fivebough
+Murrumbidgee,S6,-0.27,25,lowbidgee floodplain
+Murrumbidgee,S6,-0.27,40,fivebough
+Lower murray,S1,0.04,1,banrock station wetland complex
+Lower murray,S1,0.04,6,coorong and murray mouth
+Lower murray,S1,0.04,15,hattah lakes
+Lower murray,S1,0.04,24,lindsay-walpolla-chowilla
+Lower murray,S1,0.04,26,lower lakes
+Lower murray,S1,0.04,32,noora evaporation basin
+Lower murray,S1,0.04,34,pyap lagoon
+Lower murray,S4,0.05,1,banrock station wetland complex
+Lower murray,S4,0.05,6,coorong and murray mouth
+Lower murray,S4,0.05,15,hattah lakes
+Lower murray,S4,0.05,24,lindsay-walpolla-chowilla
+Lower murray,S4,0.05,26,lower lakes
+Lower murray,S4,0.05,32,noora evaporation basin
+Lower murray,S4,0.05,34,pyap lagoon
+Lower murray,S2,-0.1,1,banrock station wetland complex
+Lower murray,S2,-0.1,6,coorong and murray mouth
+Lower murray,S2,-0.1,15,hattah lakes
+Lower murray,S2,-0.1,24,lindsay-walpolla-chowilla
+Lower murray,S2,-0.1,26,lower lakes
+Lower murray,S2,-0.1,32,noora evaporation basin
+Lower murray,S2,-0.1,34,pyap lagoon
+Lower murray,S5,-0.15,1,banrock station wetland complex
+Lower murray,S5,-0.15,6,coorong and murray mouth
+Lower murray,S5,-0.15,15,hattah lakes
+Lower murray,S5,-0.15,24,lindsay-walpolla-chowilla
+Lower murray,S5,-0.15,26,lower lakes
+Lower murray,S5,-0.15,32,noora evaporation basin
+Lower murray,S5,-0.15,34,pyap lagoon
+Lower murray,S3,-0.21,1,banrock station wetland complex
+Lower murray,S3,-0.21,6,coorong and murray mouth
+Lower murray,S3,-0.21,15,hattah lakes
+Lower murray,S3,-0.21,24,lindsay-walpolla-chowilla
+Lower murray,S3,-0.21,26,lower lakes
+Lower murray,S3,-0.21,32,noora evaporation basin
+Lower murray,S3,-0.21,34,pyap lagoon
+Lower murray,S6,-0.31,1,banrock station wetland complex
+Lower murray,S6,-0.31,6,coorong and murray mouth
+Lower murray,S6,-0.31,15,hattah lakes
+Lower murray,S6,-0.31,24,lindsay-walpolla-chowilla
+Lower murray,S6,-0.31,26,lower lakes
+Lower murray,S6,-0.31,32,noora evaporation basin
+Lower murray,S6,-0.31,34,pyap lagoon
+Central murray,S1,0.04,2,barmah-millewa
+Central murray,S1,0.04,13,gunbower-koondrook-perricoota
+Central murray,S1,0.04,29,mulwala
+Central murray,S1,0.04,30,murray river and euston lakes
+Central murray,S4,0.05,2,barmah-millewa
+Central murray,S4,0.05,13,gunbower-koondrook-perricoota
+Central murray,S4,0.05,29,mulwala
+Central murray,S4,0.05,30,murray river and euston lakes
+Central murray,S2,-0.1,2,barmah-millewa
+Central murray,S2,-0.1,13,gunbower-koondrook-perricoota
+Central murray,S2,-0.1,29,mulwala
+Central murray,S2,-0.1,30,murray river and euston lakes
+Central murray,S5,-0.15,2,barmah-millewa
+Central murray,S5,-0.15,13,gunbower-koondrook-perricoota
+Central murray,S5,-0.15,29,mulwala
+Central murray,S5,-0.15,30,murray river and euston lakes
+Central murray,S3,-0.21,2,barmah-millewa
+Central murray,S3,-0.21,13,gunbower-koondrook-perricoota
+Central murray,S3,-0.21,29,mulwala
+Central murray,S3,-0.21,30,murray river and euston lakes
+Central murray,S6,-0.31,2,barmah-millewa
+Central murray,S6,-0.31,13,gunbower-koondrook-perricoota
+Central murray,S6,-0.31,29,mulwala
+Central murray,S6,-0.31,30,murray river and euston lakes
+Goulburn,S1,0.01,8,corop wetlands complex
+Goulburn,S4,0.02,8,corop wetlands complex
+Goulburn,S2,-0.1,8,corop wetlands complex
+Goulburn,S5,-0.15,8,corop wetlands complex
+Goulburn,S3,-0.19,8,corop wetlands complex
+Goulburn,S6,-0.29,8,corop wetlands complex
+Broken,S1,0.01,23,lake mokoan
+Broken,S4,0.02,23,lake mokoan
+Broken,S2,-0.1,23,lake mokoan
+Broken,S5,-0.15,23,lake mokoan
+Broken,S3,-0.19,23,lake mokoan
+Broken,S6,-0.29,23,lake mokoan
+Loddon,S1,0.01,16,kerang wetlands
+Loddon,S4,0.02,16,kerang wetlands
+Loddon,S2,-0.1,16,kerang wetlands
+Loddon,S5,-0.15,16,kerang wetlands
+Loddon,S3,-0.19,16,kerang wetlands
+Loddon,S6,-0.29,16,kerang wetlands
+Border rivers,NA,NA,41,coolmunda dam
+ Kiewa,NA,NA,41, kiewa river
+ Macquarie,NA,NA,42, burrendong dam
+ Wimmera,NA,NA,43, lake buloke
