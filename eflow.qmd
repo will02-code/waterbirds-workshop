@@ -210,7 +210,7 @@ full_data <- tibble(surv_year = seq(2010, 2024), Wetland = "macquarie marshes") 
 ```
 
 ## Make new counterfactual data
-and make the coutnerfactual datasets - one with environmental flow, one without
+and make the counterfactual datasets - one with environmental flow, one without
 ```{r}
 #| message: false
 #| warning: false

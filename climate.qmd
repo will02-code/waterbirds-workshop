@@ -5,6 +5,8 @@ format:
   html:
     code-fold: false
     theme: cosmos
+filters:
+  - webr
 ---
 
 In this notebook, I run through the climate change analysis for abundance, using the model made in Task 2.

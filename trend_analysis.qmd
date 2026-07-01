@@ -120,6 +120,7 @@ We can then make plots of the fitted models and calculate summary statistics usi
 #| label: Plots and summary stats
 #| code-summary: "Generate plots and summary statistics"
 #| eval: false
+#| code-fold: true
 
 group_vars <- c(
     if (decade_analysis) "decade",

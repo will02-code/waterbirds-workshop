@@ -1,0 +1,16 @@
+---
+title: "Waterbird Analysis Workshop"
+author: "Will Wright"
+date: today
+format: 
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    code-fold: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Workshop Overview
