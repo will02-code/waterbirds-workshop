@@ -9,9 +9,7 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="author" content="Your Name">
-  <meta name="dcterms.date" content="2026-07-01">
-  <title>waterbirds-workshop – Waterbird Analysis Workshop</title>
+  <title>waterbirds-workshop – Waterbirds workshop</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -99,12 +97,10 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b6f97c83e9f1a840a94ebeef62e6d62e.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -199,221 +195,1252 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Waterbird Analysis Workshop</h1>
-  <p class="subtitle">Murray-Darling Basin Trend Analysis and Climate Predictions</p>
+  <h1 class="title">Waterbirds workshop</h1>
 
 <div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Your Name 
-</div>
-</div>
 </div>
 
-  <p class="date">2026-07-01</p>
 </section>
-<section id="workshop-overview" class="slide level2">
-<h2>Workshop Overview</h2>
-<p>This workshop covers waterbird analysis in the Murray-Darling Basin:</p>
+<section id="outline" class="slide level2 smaller">
+<h2>Outline</h2>
 <ol type="1">
-<li><strong>Trend Analysis</strong> — Extract data and identify population trends</li>
-<li><strong>Model Building</strong> — Fit Bayesian hurdle-gamma models</li>
-<li><strong>Climate Predictions</strong> — Project waterbird responses under climate scenarios</li>
-<li><strong>E-flow Analysis</strong> — Macquarie Marshes environmental flow assessment</li>
+<li>Introduction to the <code>eawsAnalysis</code> package, and some sample trend analyses</li>
+<li>Sample model</li>
+<li>Sample climate change analysis</li>
+<li>Sample e-flow analysis</li>
 </ol>
 </section>
 <section>
-<section id="trend-analysis" class="title-slide slide level1 center" data-background-color="#000000">
-<h1>Trend Analysis</h1>
+<section id="trend-analysis" class="title-slide slide level1 center">
+<h1>Trend analysis</h1>
 
 </section>
-<section id="the-eawsanalysis-package" class="slide level2">
-<h2>The <code>eawsAnalysis</code> Package</h2>
+<section id="eawsanalysis-package" class="slide level2 smaller">
+<h2><code>eawsAnalysis</code> package</h2>
+<p>This package is a collections of functions under to interrogate the waterbird database. We’ll run through some here:</p>
+<ul>
+<li><code>clean_data_run_models</code>: Main function which cleans data, runs models, and cleans output.</li>
+<li><code>run_mk_models</code>: Side-car modeling function.</li>
+<li><code>fit_mk_model</code>: Fit Mann-Kendall model to a single group of data.</li>
+<li><code>clean_clip_raw_data</code>: Clip and clean raw waterbird data.</li>
+<li><code>get_bird_data</code>: Extract cleaned waterbird data.</li>
+<li><code>clean_model_output</code>: Clean output from run_mk_models().</li>
+<li><code>post_fitting_line_plot</code>: Plot model results with ggplot2</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(eawsAnalysis)</span>
-<span id="cb1-2"><a></a><span class="fu">data</span>(data_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="co"># install.packages("remotes")</span></span>
+<span id="cb1-2"><a></a><span class="co"># remotes::install_github("will02-code/eawsAnalysis")</span></span>
+<span id="cb1-3"><a></a><span class="fu">library</span>(eawsAnalysis)</span>
+<span id="cb1-4"><a></a><span class="fu">library</span>(magrittr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>Purpose-built package for Eastern Australian Waterbird Survey analysis:</p>
-<ul>
-<li>Data cleaning and filtering</li>
-<li>Mann-Kendall trend tests</li>
-<li>Visualization tools</li>
-<li>Integrated workflow functions</li>
-</ul>
 </section>
-<section id="running-trend-analysis" class="slide level2">
-<h2>Running Trend Analysis</h2>
+<section id="extract-data" class="slide level2 smaller">
+<h2>Extract data</h2>
+<p>First, we set some parameters:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>programs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Eastern Australian Survey"</span>) </span>
+<span id="cb2-2"><a></a>dataset <span class="ot">=</span> data_clean                      </span>
+<span id="cb2-3"><a></a>metric <span class="ot">=</span> <span class="st">"abundance"</span>                      </span>
+<span id="cb2-4"><a></a>wetlands <span class="ot">=</span> <span class="cn">NULL</span>                           </span>
+<span id="cb2-5"><a></a>valleys <span class="ot">=</span> <span class="cn">NULL</span>                            </span>
+<span id="cb2-6"><a></a>basinDiv <span class="ot">=</span> <span class="cn">NULL</span>                           </span>
+<span id="cb2-7"><a></a>grouping_cols <span class="ot">=</span> <span class="st">"spp_code"</span>                </span>
+<span id="cb2-8"><a></a>decade_analysis <span class="ot">=</span> <span class="cn">FALSE</span>                   </span>
+<span id="cb2-9"><a></a>by_condition <span class="ot">=</span> <span class="cn">NULL</span>                       </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Then extract the data using <code>get_bird_data()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>d2 <span class="ot">&lt;-</span> <span class="fu">get_bird_data</span>(</span>
+<span id="cb3-2"><a></a>  dataset,</span>
+<span id="cb3-3"><a></a>  <span class="at">programs =</span> programs,</span>
+<span id="cb3-4"><a></a>  <span class="at">metric =</span> metric,</span>
+<span id="cb3-5"><a></a>  <span class="at">wetlands =</span> wetlands,</span>
+<span id="cb3-6"><a></a>  <span class="at">valleys =</span> valleys,</span>
+<span id="cb3-7"><a></a>  <span class="at">basinDiv =</span> basinDiv,</span>
+<span id="cb3-8"><a></a>  <span class="at">grouping_cols =</span> grouping_cols,</span>
+<span id="cb3-9"><a></a>  <span class="at">by_condition =</span> by_condition</span>
+<span id="cb3-10"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="run-models-and-clean-outputs" class="slide level2 smaller">
+<h2>Run models and clean outputs</h2>
+<p>Using that data, we run the trend analysis models (Mann-Kendall trend detection and Theil-Sen slope)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>output <span class="ot">&lt;-</span> <span class="fu">run_mk_models</span>(</span>
+<span id="cb4-2"><a></a>  d2,</span>
+<span id="cb4-3"><a></a>  <span class="at">decade_analysis =</span> decade_analysis,</span>
+<span id="cb4-4"><a></a>  <span class="at">grouping_cols =</span> grouping_cols,</span>
+<span id="cb4-5"><a></a>)</span>
+<span id="cb4-6"><a></a></span>
+<span id="cb4-7"><a></a>cleaned <span class="ot">&lt;-</span> <span class="fu">clean_model_output</span>(</span>
+<span id="cb4-8"><a></a>  output,</span>
+<span id="cb4-9"><a></a>  <span class="at">decade_analysis =</span> decade_analysis,</span>
+<span id="cb4-10"><a></a>  <span class="at">grouping_cols =</span> grouping_cols</span>
+<span id="cb4-11"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="plot-results" class="slide level2 smaller">
+<h2>Plot results</h2>
+<p>And finally, plot the results</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-code-line-numbers="2-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>result <span class="ot">&lt;-</span> <span class="fu">clean_data_run_models</span>(</span>
-<span id="cb2-2"><a></a>  <span class="at">dataset =</span> data_clean,</span>
-<span id="cb2-3"><a></a>  <span class="at">programs =</span> <span class="fu">c</span>(<span class="st">"Eastern Australian Survey"</span>),</span>
-<span id="cb2-4"><a></a>  <span class="at">metric =</span> <span class="st">"abundance"</span>,</span>
-<span id="cb2-5"><a></a>  <span class="at">wetlands =</span> <span class="cn">NULL</span>,</span>
-<span id="cb2-6"><a></a>  <span class="at">valleys =</span> <span class="cn">NULL</span>,</span>
-<span id="cb2-7"><a></a>  <span class="at">grouping_cols =</span> <span class="st">"spp_code"</span>,</span>
-<span id="cb2-8"><a></a>  <span class="at">decade_analysis =</span> <span class="cn">FALSE</span></span>
-<span id="cb2-9"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<summary>Generate plots and summary statistics</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>group_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb5-2"><a></a>    <span class="cf">if</span> (decade_analysis) <span class="st">"decade"</span>,</span>
+<span id="cb5-3"><a></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(grouping_cols)) grouping_cols,</span>
+<span id="cb5-4"><a></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(by_condition)) by_condition</span>
+<span id="cb5-5"><a></a>  )</span>
+<span id="cb5-6"><a></a></span>
+<span id="cb5-7"><a></a>cleaned_summary <span class="ot">&lt;-</span> cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb5-10"><a></a>      <span class="at">min =</span> <span class="fu">min</span>(value),</span>
+<span id="cb5-11"><a></a>      <span class="at">q1 =</span> stats<span class="sc">::</span><span class="fu">quantile</span>(value, <span class="fl">0.25</span>),</span>
+<span id="cb5-12"><a></a>      <span class="at">median =</span> stats<span class="sc">::</span><span class="fu">median</span>(value),</span>
+<span id="cb5-13"><a></a>      <span class="at">q3 =</span> stats<span class="sc">::</span><span class="fu">quantile</span>(value, <span class="fl">0.75</span>),</span>
+<span id="cb5-14"><a></a>      <span class="at">max =</span> <span class="fu">max</span>(value),</span>
+<span id="cb5-15"><a></a>      <span class="at">long_term_avg =</span> <span class="fu">mean</span>(value),</span>
+<span id="cb5-16"><a></a>      dplyr<span class="sc">::</span><span class="fu">across</span>(</span>
+<span id="cb5-17"><a></a>        tidyselect<span class="sc">::</span><span class="fu">any_of</span>(<span class="fu">c</span>(</span>
+<span id="cb5-18"><a></a>          <span class="st">"percent_estimate"</span>,</span>
+<span id="cb5-19"><a></a>          <span class="st">"percent_p.value"</span>,</span>
+<span id="cb5-20"><a></a>          <span class="st">"mk_tau"</span>,</span>
+<span id="cb5-21"><a></a>          <span class="st">"mk_p_value"</span>,</span>
+<span id="cb5-22"><a></a></span>
+<span id="cb5-23"><a></a>          <span class="st">'mk_logslope'</span>,</span>
+<span id="cb5-24"><a></a>          <span class="st">'mk_percentslope'</span>,</span>
+<span id="cb5-25"><a></a>          <span class="st">'mk_intercept'</span>,</span>
+<span id="cb5-26"><a></a>          <span class="st">"n_rows"</span></span>
+<span id="cb5-27"><a></a>        )),</span>
+<span id="cb5-28"><a></a>        dplyr<span class="sc">::</span>first</span>
+<span id="cb5-29"><a></a>      ),</span>
+<span id="cb5-30"><a></a></span>
+<span id="cb5-31"><a></a>      <span class="at">.by =</span> tidyselect<span class="sc">::</span><span class="fu">all_of</span>(group_vars)</span>
+<span id="cb5-32"><a></a>    )</span>
+<span id="cb5-33"><a></a></span>
+<span id="cb5-34"><a></a>  p <span class="ot">&lt;-</span> <span class="fu">post_fitting_line_plot</span>(</span>
+<span id="cb5-35"><a></a>    cleaned,</span>
+<span id="cb5-36"><a></a>    <span class="at">decade_analysis =</span> decade_analysis,</span>
+<span id="cb5-37"><a></a>    <span class="at">grouping_cols =</span> grouping_cols,</span>
+<span id="cb5-38"><a></a>    <span class="at">metric =</span> metric</span>
+<span id="cb5-39"><a></a>  )</span>
+<span id="cb5-40"><a></a>  p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>Returns cleaned data, plots, and summary statistics</p>
 </section>
-<section id="trend-results" class="slide level2">
-<h2>Trend Results</h2>
-<ul>
-<li>Species-level trends over time</li>
-<li>Mann-Kendall tau and p-values</li>
-<li>Long-term averages and variability</li>
-</ul>
-</section></section>
-<section>
-<section id="model-building" class="title-slide slide level1 center" data-background-color="#000000">
-<h1>Model Building</h1>
-
-</section>
-<section id="model-structure" class="slide level2">
-<h2>Model Structure</h2>
-<p><strong>Hurdle-Gamma Model</strong> for zero-inflated count data:</p>
-<ul>
-<li class="fragment"><strong>Hurdle component</strong> — Binomial model for presence/absence</li>
-<li class="fragment"><strong>Gamma component</strong> — Continuous positive values when present</li>
-<li class="fragment"><strong>Bayesian estimation</strong> — Full uncertainty quantification via MCMC</li>
-</ul>
-</section>
-<section id="environmental-predictors" class="slide level2">
-<h2>Environmental Predictors</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Flow</strong> - Wetland-level annual flow - Basin-level flow (3-month) - Lagged effects</p>
-<p><strong>Precipitation</strong> - Asset-level rainfall - Valley-level rainfall - Annual totals</p>
-</div><div class="column" style="width:50%;">
-<p><strong>Surface Water</strong> - Wetland inundation - Basin inundation - Valley inundation - Lagged conditions</p>
-</div></div>
-</section>
-<section id="prior-specification" class="slide level2">
-<h2>Prior Specification</h2>
+<section id="all-together" class="slide level2 smaller">
+<h2>All together</h2>
+<p>We do this all with one function, <code>clean_data_run_models()</code>, which generates three outputs</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb3-2"><a></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"b"</span>),</span>
-<span id="cb3-3"><a></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sd"</span>),</span>
-<span id="cb3-4"><a></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>)</span>
-<span id="cb3-5"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<p>Weakly informative priors allow data to dominate</p>
-</section>
-<section id="model-fitting" class="slide level2">
-<h2>Model Fitting</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>m1<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb4-2"><a></a>  full_formula,</span>
-<span id="cb4-3"><a></a>  <span class="at">family =</span> <span class="fu">hurdle_gamma</span>(),</span>
-<span id="cb4-4"><a></a>  <span class="at">data =</span> full_data,</span>
-<span id="cb4-5"><a></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb4-6"><a></a>  <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb4-7"><a></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb4-8"><a></a>  <span class="at">iter =</span> <span class="dv">4000</span></span>
-<span id="cb4-9"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>result <span class="ot">&lt;-</span> <span class="fu">clean_data_run_models</span>(</span>
+<span id="cb6-2"><a></a>  <span class="at">dataset =</span> data_clean,</span>
+<span id="cb6-3"><a></a>  <span class="at">programs =</span> <span class="fu">c</span>(<span class="st">"Eastern Australian Survey"</span>),</span>
+<span id="cb6-4"><a></a>  <span class="at">metric =</span> <span class="st">"abundance"</span>,</span>
+<span id="cb6-5"><a></a>  <span class="at">wetlands =</span> <span class="cn">NULL</span>,</span>
+<span id="cb6-6"><a></a>  <span class="at">valleys =</span> <span class="cn">NULL</span>,</span>
+<span id="cb6-7"><a></a>  <span class="at">grouping_cols =</span> <span class="cn">NULL</span>, <span class="co"># Grouping column (e.g. "spp_code" for species-level analysis)</span></span>
+<span id="cb6-8"><a></a>  <span class="at">basinDiv =</span> <span class="cn">NULL</span>, </span>
+<span id="cb6-9"><a></a>  <span class="at">decade_analysis =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb6-10"><a></a>  <span class="at">trend_line =</span> <span class="cn">TRUE</span> <span class="co"># Whether to generate trend line plot</span></span>
+<span id="cb6-11"><a></a>)</span>
+<span id="cb6-12"><a></a>cleaned_data <span class="ot">&lt;-</span> result[[<span class="dv">1</span>]]</span>
+<span id="cb6-13"><a></a>plot <span class="ot">&lt;-</span> result[[<span class="dv">2</span>]]</span>
+<span id="cb6-14"><a></a>summary_stats <span class="ot">&lt;-</span> result[[<span class="dv">3</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="model-diagnostics" class="slide level2">
-<h2>Model Diagnostics</h2>
-<p>Check convergence and fit:</p>
-<ul>
-<li><strong>Trace plots</strong> — MCMC chain mixing</li>
-<li><strong>R-hat values</strong> — Should be &lt; 1.01</li>
-<li><strong>Posterior predictive checks</strong> — Compare simulated to observed data</li>
-<li><strong>Bayesian R²</strong> — Variance explained</li>
-</ul>
-</section></section>
-<section>
-<section id="climate-predictions" class="title-slide slide level1 center" data-background-color="#000000">
-<h1>Climate Predictions</h1>
-
-</section>
-<section id="climate-scenarios" class="slide level2">
-<h2>Climate Scenarios</h2>
-<p>Six projection scenarios from valley-level climate models:</p>
-<ul>
-<li><strong>Historical baseline</strong></li>
-<li><strong>SSP2-4.5</strong> (moderate emissions)</li>
-<li><strong>SSP3-7.0</strong> (high emissions)</li>
-<li>Multiple GCM projections</li>
-</ul>
-<p>Precipitation changes translated to flow z-scores</p>
-</section>
-<section id="prediction-workflow" class="slide level2">
-<h2>Prediction Workflow</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>scenarios <span class="ot">&lt;-</span> <span class="fu">get_climate_predictions</span>(</span>
-<span id="cb5-2"><a></a>  <span class="at">model =</span> m1<span class="fl">.1</span>,</span>
-<span id="cb5-3"><a></a>  <span class="at">wetland =</span> <span class="st">"macquarie marshes"</span>,</span>
-<span id="cb5-4"><a></a>  <span class="at">newdata =</span> pred_newdata,</span>
-<span id="cb5-5"><a></a>  <span class="at">metric =</span> <span class="st">"abundance"</span></span>
-<span id="cb5-6"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<p>Generate posterior predictions for each scenario</p>
-</section>
-<section id="expected-changes" class="slide level2">
-<h2>Expected Changes</h2>
-<p>Quantify expected waterbird response:</p>
-<ul>
-<li>Median change from baseline</li>
-<li>Credible intervals</li>
-<li>Probability of decline/increase</li>
-</ul>
-</section></section>
-<section>
-<section id="e-flow-analysis" class="title-slide slide level1 center" data-background-color="#000000">
-<h1>E-flow Analysis</h1>
-
-</section>
-<section id="macquarie-marshes" class="slide level2">
-<h2>Macquarie Marshes</h2>
-<p>Environmental flow assessment:</p>
-<ul>
-<li>Simulate different flow scenarios</li>
-<li>Predict waterbird outcomes</li>
-<li>Identify optimal flow regimes</li>
-<li>Support adaptive management</li>
-</ul>
-</section>
-<section id="take-home-messages" class="slide level2">
-<h2>Take-Home Messages</h2>
+<section id="full-dataframe" class="slide level2 scrollable">
+<h2>Full dataframe</h2>
 <ol type="1">
-<li class="fragment"><strong>Integrated workflow</strong> — <code>eawsAnalysis</code> package streamlines analysis</li>
-<li class="fragment"><strong>Bayesian models</strong> — Full uncertainty quantification for predictions</li>
-<li class="fragment"><strong>Climate-ready</strong> — Framework for scenario planning</li>
-<li class="fragment"><strong>Management-relevant</strong> — E-flow tools support decision-making</li>
+<li>The raw data</li>
 </ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co">#| label: print_cleaned_data</span></span>
+<span id="cb7-2"><a></a><span class="co">#| code-summary: "Print cleaned data"</span></span>
+<span id="cb7-3"><a></a><span class="co">#| echo: false</span></span>
+<span id="cb7-4"><a></a></span>
+<span id="cb7-5"><a></a>cleaned_data <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">metric</th>
+<th style="text-align: right;">surv_year</th>
+<th style="text-align: right;">value</th>
+<th style="text-align: right;">mk_tau</th>
+<th style="text-align: right;">mk_p_value</th>
+<th style="text-align: right;">mk_logslope</th>
+<th style="text-align: right;">mk_percentslope</th>
+<th style="text-align: right;">mk_intercept</th>
+<th style="text-align: left;">mk_warnings</th>
+<th style="text-align: left;">mk_has_warnings</th>
+<th style="text-align: right;">n_rows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">abundance</td>
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">618228</td>
+<td style="text-align: right;">-0.36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-3.77</td>
+<td style="text-align: right;">88.75</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">abundance</td>
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">703716</td>
+<td style="text-align: right;">-0.36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-3.77</td>
+<td style="text-align: right;">88.75</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abundance</td>
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">478006</td>
+<td style="text-align: right;">-0.36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-3.77</td>
+<td style="text-align: right;">88.75</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">abundance</td>
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">248684</td>
+<td style="text-align: right;">-0.36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-3.77</td>
+<td style="text-align: right;">88.75</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abundance</td>
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">195203</td>
+<td style="text-align: right;">-0.36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-3.77</td>
+<td style="text-align: right;">88.75</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">42</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
-<section id="questions" class="slide level2">
-<h2>Questions?</h2>
-<p><strong>Resources:</strong></p>
+<section id="basic-plot" class="slide level2">
+<h2>Basic plot</h2>
+<ol start="2" type="1">
+<li>A simple plot</li>
+</ol>
+
+<img data-src="slides_files/figure-revealjs/fitted_model_plot-1.png" width="960" class="r-stretch"></section>
+<section id="summary-statistics" class="slide level2 smaller">
+<h2>Summary statistics</h2>
+<ol start="3" type="1">
+<li>Summary statistics</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">min</td>
+<td style="text-align: right;">34702.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">q1</td>
+<td style="text-align: right;">61629.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">median</td>
+<td style="text-align: right;">117726.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">q3</td>
+<td style="text-align: right;">223822.25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">max</td>
+<td style="text-align: right;">703716.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">long_term_avg</td>
+<td style="text-align: right;">166967.57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mk_tau</td>
+<td style="text-align: right;">-0.36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mk_p_value</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mk_logslope</td>
+<td style="text-align: right;">-0.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mk_percentslope</td>
+<td style="text-align: right;">-3.77</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mk_intercept</td>
+<td style="text-align: right;">88.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">n_rows</td>
+<td style="text-align: right;">42.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="package-summary" class="slide level2 smaller">
+<h2>Package summary</h2>
 <ul>
-<li>GitHub: <a href="https://github.com/USERNAME/waterbirds-workshop">github.com/USERNAME/waterbirds-workshop</a></li>
-<li>Package: <code>remotes::install_github("will02-code/eawsAnalysis")</code></li>
-<li>Documentation: [Link to your website]</li>
+<li>allows for using SWC as well (but the swc needs to be in the data - see workshop website)</li>
+<li>can group by wetland, valley, spp_code, and functional group</li>
+<li>specify which metric (“abundance”, “richness”, “nests”, “broods”, “nest_richness”, “pct_filled”, or “simpson”)</li>
+</ul>
+</section></section>
+<section>
+<section id="sample-model" class="title-slide slide level1 center">
+<h1>Sample model</h1>
+
+</section>
+<section id="load-libraries-and-data" class="slide level2">
+<h2>Load libraries and data</h2>
+<p>Cleaning code omitted</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="co"># libraries</span></span>
+<span id="cb8-2"><a></a><span class="fu">library</span>(data.table)</span>
+<span id="cb8-3"><a></a><span class="fu">library</span>(brms)</span>
+<span id="cb8-4"><a></a><span class="co"># need to install this with install.packages("cmdstanr", repos = c('https://stan-dev.r-universe.dev', getOption("repos")))</span></span>
+<span id="cb8-5"><a></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb8-6"><a></a><span class="co"># and also this, if you haven't run it already install_cmdstan()</span></span>
+<span id="cb8-7"><a></a><span class="fu">library</span>(eawsAnalysis) </span>
+<span id="cb8-8"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb8-9"><a></a><span class="fu">library</span>(stringr)</span>
+<span id="cb8-10"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-11"><a></a><span class="fu">library</span>(bayestestR)</span>
+<span id="cb8-12"><a></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb8-13"><a></a><span class="fu">library</span>(flextable)</span>
+<span id="cb8-14"><a></a>my_theme <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">title_size =</span> <span class="dv">22</span>, <span class="at">text_size =</span> <span class="dv">20</span>, ...) {</span>
+<span id="cb8-15"><a></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb8-16"><a></a>    <span class="fu">theme</span>(</span>
+<span id="cb8-17"><a></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb8-18"><a></a>        <span class="at">size =</span> <span class="dv">22</span>,</span>
+<span id="cb8-19"><a></a>        <span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb8-20"><a></a>        <span class="at">colour =</span> <span class="st">"black"</span>,</span>
+<span id="cb8-21"><a></a>        <span class="at">family =</span> <span class="st">"tachoma"</span></span>
+<span id="cb8-22"><a></a>      ),</span>
+<span id="cb8-23"><a></a>      <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> text_size),</span>
+<span id="cb8-24"><a></a>      <span class="at">strip.background.x =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb8-25"><a></a>      <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> text_size, <span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb8-26"><a></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> title_size, <span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb8-27"><a></a>      <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> title_size, <span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb8-28"><a></a>      <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> text_size, <span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb8-29"><a></a>      ...</span>
+<span id="cb8-30"><a></a>    )</span>
+<span id="cb8-31"><a></a>}</span>
+<span id="cb8-32"><a></a></span>
+<span id="cb8-33"><a></a><span class="co">#Spatial data</span></span>
+<span id="cb8-34"><a></a>wetlands_with_valleys <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetlands_with_valleys.csv"</span>) </span>
+<span id="cb8-35"><a></a></span>
+<span id="cb8-36"><a></a></span>
+<span id="cb8-37"><a></a><span class="co"># Rainfall data</span></span>
+<span id="cb8-38"><a></a>asset_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/asset_precip_data.csv"</span>)</span>
+<span id="cb8-39"><a></a>valley_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_precip_data.csv"</span>)</span>
+<span id="cb8-40"><a></a>precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/precip_data.csv"</span>)</span>
+<span id="cb8-41"><a></a></span>
+<span id="cb8-42"><a></a><span class="co"># SWC (flooding) data</span></span>
+<span id="cb8-43"><a></a>swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/australia_annual_water_area_presence.csv"</span>)</span>
+<span id="cb8-44"><a></a>wetlands_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetland_inundation_results.csv"</span>)</span>
+<span id="cb8-45"><a></a>basin_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/basin_inundation_results.csv"</span>) </span>
+<span id="cb8-46"><a></a>valleys_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_inundation_results.csv"</span>)</span>
+<span id="cb8-47"><a></a></span>
+<span id="cb8-48"><a></a><span class="co"># Flow data</span></span>
+<span id="cb8-49"><a></a>combined_flow_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_data.csv"</span>)</span>
+<span id="cb8-50"><a></a>total_flow <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/total_flow.csv"</span>)</span>
+<span id="cb8-51"><a></a></span>
+<span id="cb8-52"><a></a><span class="fu">set.seed</span>(<span class="dv">123</span>) </span>
+<span id="cb8-53"><a></a></span>
+<span id="cb8-54"><a></a></span>
+<span id="cb8-55"><a></a><span class="co"># Waterbird data</span></span>
+<span id="cb8-56"><a></a><span class="fu">data</span>(data_clean)</span>
+<span id="cb8-57"><a></a><span class="co"># glimpse(data_clean)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="get-data-using-the-get_bird_data-function" class="slide level2 smaller">
+<h2>Get data using the <code>get_bird_data</code> function</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>d <span class="ot">&lt;-</span></span>
+<span id="cb9-2"><a></a>  <span class="fu">get_bird_data</span>(</span>
+<span id="cb9-3"><a></a>    data_clean , <span class="co"># subset so that only years with all wetlands are included</span></span>
+<span id="cb9-4"><a></a>    <span class="at">programs =</span> <span class="fu">c</span>(<span class="st">"MDB Combined"</span>),</span>
+<span id="cb9-5"><a></a>    <span class="at">metric =</span> <span class="st">"abundance"</span>,</span>
+<span id="cb9-6"><a></a>    <span class="at">wetlands =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-7"><a></a>    <span class="at">valleys =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-8"><a></a>    <span class="at">basinDiv =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-9"><a></a>    <span class="at">grouping_cols =</span> <span class="st">'Wetland'</span></span>
+<span id="cb9-10"><a></a>  )</span>
+<span id="cb9-11"><a></a></span>
+<span id="cb9-12"><a></a></span>
+<span id="cb9-13"><a></a>full_data <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb9-14"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb9-15"><a></a>    asset_precip <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Wetland =</span> <span class="fu">str_to_lower</span>(Wetland)),</span>
+<span id="cb9-16"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, Wetland <span class="sc">==</span> Wetland)</span>
+<span id="cb9-17"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-18"><a></a>  <span class="fu">left_join</span>(wetlands_with_valleys) <span class="sc">%&gt;%</span></span>
+<span id="cb9-19"><a></a>  <span class="fu">mutate</span>(<span class="at">ValleyName =</span> <span class="fu">str_to_lower</span>(ValleyName)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-20"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb9-21"><a></a>    valley_precip,</span>
+<span id="cb9-22"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, ValleyName <span class="sc">==</span> valleyname)</span>
+<span id="cb9-23"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-24"><a></a>  <span class="fu">left_join</span>(precip, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-25"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb9-26"><a></a>    combined_flow_data,</span>
+<span id="cb9-27"><a></a>    <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>, Wetland <span class="sc">==</span> wetlands)</span>
+<span id="cb9-28"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-29"><a></a>  <span class="fu">filter</span>(</span>
+<span id="cb9-30"><a></a>    <span class="sc">!</span><span class="fu">is.na</span>(wetland_flow_annual_scaled)</span>
+<span id="cb9-31"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-32"><a></a>  <span class="fu">left_join</span>(total_flow, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-33"><a></a>  <span class="fu">left_join</span>(swc, <span class="fu">join_by</span>(<span class="st">'surv_year'</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-34"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb9-35"><a></a>    valleys_swc,</span>
+<span id="cb9-36"><a></a>    <span class="fu">join_by</span>(<span class="st">'surv_year'</span> <span class="sc">==</span> <span class="st">"year"</span>, ValleyName <span class="sc">==</span> valley_name)</span>
+<span id="cb9-37"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-38"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb9-39"><a></a>    wetlands_swc,</span>
+<span id="cb9-40"><a></a>    <span class="fu">join_by</span>(<span class="st">'surv_year'</span> <span class="sc">==</span> <span class="st">"year"</span>, Wetland <span class="sc">==</span> wetland_name)</span>
+<span id="cb9-41"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-42"><a></a>  <span class="fu">left_join</span>(basin_swc, <span class="fu">join_by</span>(<span class="st">'surv_year'</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-43"><a></a>  <span class="fu">select</span>(</span>
+<span id="cb9-44"><a></a>    <span class="sc">-</span><span class="fu">c</span>(subwetland,asset_precip_3m,asset_precip,X,valley_precip_3m,valley_precip,basin_precip_3m,basin_precip,flow_3m,flow,water_area_m2,inundated_area,inundated_area.x,inundated_area.y</span>
+<span id="cb9-45"><a></a>    )</span>
+<span id="cb9-46"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-47"><a></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>())</span>
+<span id="cb9-48"><a></a></span>
+<span id="cb9-49"><a></a><span class="fu">glimpse</span>(full_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 507
+Columns: 36
+$ surv_year                             &lt;dbl&gt; 2009, 2009, 2009, 2009, 2009, 20…
+$ Wetland                               &lt;chr&gt; "banrock station wetland complex…
+$ value                                 &lt;dbl&gt; 0, 2040, NA, 292744, NA, NA, NA,…
+$ metric                                &lt;chr&gt; "abundance", "abundance", "abund…
+$ decade                                &lt;chr&gt; "2007-2016", "2007-2016", "2007-…
+$ surv_year_in_decade                   &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,…
+$ asset_precip_3m_scaled                &lt;dbl&gt; -0.43504645, -0.65105357, -0.500…
+$ asset_precip_3m_scaled_lagged         &lt;dbl&gt; -1.3913679, -1.3503846, -1.35983…
+$ asset_precip_annual_scaled            &lt;dbl&gt; -0.23543485, -0.44100006, -0.814…
+$ asset_precip_annual_scaled_lagged     &lt;dbl&gt; -0.38181001, -0.83088865, -0.469…
+$ ValleyName                            &lt;chr&gt; "lower murray", "central murray"…
+$ valley_precip_3m_scaled               &lt;dbl&gt; 0.30787802, -0.36919404, -1.1249…
+$ valley_precip_3m_scaled_lagged        &lt;dbl&gt; -0.3439866, -0.6668496, -0.13928…
+$ valley_precip_annual_scaled           &lt;dbl&gt; -0.322915611, -0.628003260, -0.7…
+$ valley_precip_annual_scaled_lagged    &lt;dbl&gt; -0.709917751, -0.881810998, -0.3…
+$ basin_precip_3m_scaled                &lt;dbl&gt; -0.7321635, -0.7321635, -0.73216…
+$ basin_precip_3m_scaled_lagged         &lt;dbl&gt; -0.03298147, -0.03298147, -0.032…
+$ basin_precip_annual_scaled            &lt;dbl&gt; -0.4773504, -0.4773504, -0.47735…
+$ basin_precip_annual_scaled_lagged     &lt;dbl&gt; -0.03477182, -0.03477182, -0.034…
+$ wetland_flow_3m_scaled                &lt;dbl&gt; -1.0250820, -1.1852326, -0.84073…
+$ wetland_flow_3m_scaled_lagged         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+$ wetland_flow_annual_scaled            &lt;dbl&gt; -0.8919005, -1.1421842, -0.81335…
+$ wetland_flow_annual_scaled_lagged     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+$ total_basin_flow_3m_scaled            &lt;dbl&gt; -1.185597, -1.185597, -1.185597,…
+$ total_basin_flow_3m_scaled_lagged     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+$ total_basin_flow_annual_scaled        &lt;dbl&gt; -1.608731, -1.608731, -1.608731,…
+$ total_basin_flow_annual_scaled_lagged &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+$ swc_australia_scaled                  &lt;dbl&gt; 0.177701, 0.177701, 0.177701, 0.…
+$ swc_australia_scaled_lagged           &lt;dbl&gt; 0.1634057, 0.1634057, 0.1634057,…
+$ valley_surface_water                  &lt;dbl&gt; -1.0199836, -1.1650618, -0.54505…
+$ valley_surface_water_lagged           &lt;dbl&gt; -1.1697900, -1.2973646, -0.60706…
+$ wetland_surface_water                 &lt;dbl&gt; -0.70456690, -0.90304862, -0.391…
+$ wetland_surface_water_lagged          &lt;dbl&gt; -0.6774912, -1.2007577, -0.41525…
+$ basin_surface_water                   &lt;dbl&gt; -0.3785752, -0.3785752, -0.37857…
+$ basin_surface_water_lagged            &lt;dbl&gt; -0.8265978, -0.8265978, -0.82659…
+$ id                                    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1…</code></pre>
+</div>
+</div>
+</section>
+<section id="run-the-model" class="slide level2 smaller">
+<h2>Run the model</h2>
+<p>I have omitted some steps here, and jump straight to fitting the final model:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a>m1<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb11-2"><a></a>  full_formula,</span>
+<span id="cb11-3"><a></a>  <span class="at">family =</span> <span class="fu">hurdle_gamma</span>(),</span>
+<span id="cb11-4"><a></a>  <span class="at">data =</span> full_data,</span>
+<span id="cb11-5"><a></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb11-6"><a></a>  <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb11-7"><a></a>  <span class="at">prior =</span> priors,</span>
+<span id="cb11-8"><a></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb11-9"><a></a>  <span class="at">iter =</span> <span class="dv">4000</span>,</span>
+<span id="cb11-10"><a></a>  <span class="at">file =</span> <span class="st">"data/m1.1.rds"</span>,</span>
+<span id="cb11-11"><a></a>  <span class="at">file_refit =</span> <span class="st">"on_change"</span></span>
+<span id="cb11-12"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>We should do some checking here before visualising model results. I have omitted both here, but see the workshop materials for details.</p>
+</section></section>
+<section>
+<section id="climate-change-analysis" class="title-slide slide level1 center">
+<h1>Climate change analysis</h1>
+
+</section>
+<section id="walk-through-for-one-wetland" class="slide level2 scrollable">
+<h2>Walk through for one wetland</h2>
+<p>Again, data cleaning here was omitted.</p>
+<p>First we load in data</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb12-2"><a></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb12-3"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb12-4"><a></a><span class="fu">library</span>(stringr)</span>
+<span id="cb12-5"><a></a><span class="fu">library</span>(eawsAnalysis)</span>
+<span id="cb12-6"><a></a><span class="fu">library</span>(sf)</span>
+<span id="cb12-7"><a></a><span class="fu">library</span>(brms)</span>
+<span id="cb12-8"><a></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb12-9"><a></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb12-10"><a></a></span>
+<span id="cb12-11"><a></a>valley_climate_projections_with_wetlands <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_climate_projections_with_wetlands.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb12-12"><a></a>    <span class="fu">na.omit</span>() <span class="co"># Scalars for each wetland, based on the valley it is located in for each climate scenario</span></span>
+<span id="cb12-13"><a></a></span>
+<span id="cb12-14"><a></a>combined_flow_metadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_metadata.csv"</span>) <span class="co"># This is the mean and sd for every wetland, based on the scaling we did for the models</span></span>
+<span id="cb12-15"><a></a></span>
+<span id="cb12-16"><a></a>basin_flow_mean_sd <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/basin_flow_mean_sd.csv"</span>) <span class="co"># This is the mean and sd for the basin flow, which we use for scaling the basin flow variables in the climate data</span></span>
+<span id="cb12-17"><a></a><span class="fu">data</span>(assets)</span>
+<span id="cb12-18"><a></a>assets_coords <span class="ot">&lt;-</span> assets <span class="sc">%&gt;%</span></span>
+<span id="cb12-19"><a></a>  <span class="co"># Ensure we have the center point of each polygon</span></span>
+<span id="cb12-20"><a></a>  <span class="fu">mutate</span>(<span class="at">centroid_lat =</span> <span class="fu">st_coordinates</span>(<span class="fu">st_centroid</span>(geom))[, <span class="dv">2</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb12-21"><a></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-22"><a></a>  <span class="co"># Sort by latitude descending (North to South)</span></span>
+<span id="cb12-23"><a></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(centroid_lat)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-24"><a></a>  <span class="fu">pull</span>(Wetland) <span class="sc">%&gt;%</span></span>
+<span id="cb12-25"><a></a>  <span class="fu">str_to_lower</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Get the first wetland, and load in the model</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>wetlands <span class="ot">&lt;-</span> valley_climate_projections_with_wetlands <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a></a>  <span class="fu">pull</span>(Wetland) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a></a>  <span class="fu">unique</span>() </span>
+<span id="cb13-4"><a></a>wetland <span class="ot">&lt;-</span> wetlands[<span class="dv">1</span>]</span>
+<span id="cb13-5"><a></a>overall_abund <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">"data/m1.1.rds"</span>)</span>
+<span id="cb13-6"><a></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"Wetland: "</span>, wetland))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Wetland: currawinya lakes"</code></pre>
+</div>
+</div>
+<p>We pull in scaling info, and scale the flow data for future climate scenarios</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>scaling <span class="ot">&lt;-</span> combined_flow_metadata <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a></a>    <span class="fu">filter</span>(wetlands <span class="sc">==</span> wetland) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a></a>    <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a></a>    <span class="fu">select</span>(</span>
+<span id="cb15-5"><a></a>      wetland_mean_flow_3m,</span>
+<span id="cb15-6"><a></a>      wetland_sd_flow_3m,</span>
+<span id="cb15-7"><a></a>      wetland_mean_flow_annual,</span>
+<span id="cb15-8"><a></a>      wetland_sd_flow_annual</span>
+<span id="cb15-9"><a></a>    )</span>
+<span id="cb15-10"><a></a></span>
+<span id="cb15-11"><a></a>scenarios <span class="ot">&lt;-</span> valley_climate_projections_with_wetlands <span class="sc">|&gt;</span></span>
+<span id="cb15-12"><a></a>    <span class="fu">filter</span>(Wetland <span class="sc">==</span> wetland) <span class="sc">|&gt;</span></span>
+<span id="cb15-13"><a></a>    <span class="fu">arrange</span>(Scenario) <span class="sc">|&gt;</span></span>
+<span id="cb15-14"><a></a>    <span class="fu">select</span>(Scenario, pct_change) <span class="sc">|&gt;</span></span>
+<span id="cb15-15"><a></a>    <span class="fu">left_join</span>(</span>
+<span id="cb15-16"><a></a>      basin_flow_mean_sd <span class="sc">|&gt;</span></span>
+<span id="cb15-17"><a></a>        <span class="fu">select</span>(Scenario, basin_flow_zscore_3m, basin_flow_zscore_annual),</span>
+<span id="cb15-18"><a></a>      <span class="at">by =</span> <span class="st">"Scenario"</span></span>
+<span id="cb15-19"><a></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb15-20"><a></a>    <span class="fu">mutate</span>(</span>
+<span id="cb15-21"><a></a>      <span class="at">wetland_flow_3m_scaled =</span> (scaling<span class="sc">$</span>wetland_mean_flow_3m <span class="sc">*</span> pct_change) <span class="sc">/</span></span>
+<span id="cb15-22"><a></a>        scaling<span class="sc">$</span>wetland_sd_flow_3m,</span>
+<span id="cb15-23"><a></a>      <span class="at">wetland_flow_annual_scaled =</span> (scaling<span class="sc">$</span>wetland_mean_flow_annual <span class="sc">*</span></span>
+<span id="cb15-24"><a></a>        pct_change) <span class="sc">/</span></span>
+<span id="cb15-25"><a></a>        scaling<span class="sc">$</span>wetland_sd_flow_annual,</span>
+<span id="cb15-26"><a></a>      <span class="at">wetland_flow_annual_scaled_lagged =</span> wetland_flow_annual_scaled,</span>
+<span id="cb15-27"><a></a>      <span class="at">total_basin_flow_3m_scaled =</span> basin_flow_zscore_3m,</span>
+<span id="cb15-28"><a></a>      <span class="at">total_basin_flow_annual_scaled =</span> basin_flow_zscore_annual,</span>
+<span id="cb15-29"><a></a>      <span class="at">total_basin_flow_annual_scaled_lagged =</span> basin_flow_zscore_annual,</span>
+<span id="cb15-30"><a></a>      <span class="at">Wetland =</span> wetland</span>
+<span id="cb15-31"><a></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb15-32"><a></a>    <span class="fu">select</span>(<span class="sc">-</span>basin_flow_zscore_3m, <span class="sc">-</span>basin_flow_zscore_annual)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="walk-through-for-one-wetland-1" class="slide level2 smaller">
+<h2>Walk through for one wetland</h2>
+<p>Then, we make a ‘new’ dataset</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>nuisance_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb16-2"><a></a>    <span class="st">"asset_precip_3m_scaled"</span>,</span>
+<span id="cb16-3"><a></a>    <span class="st">"asset_precip_annual_scaled"</span>,</span>
+<span id="cb16-4"><a></a>    <span class="st">"asset_precip_annual_scaled_lagged"</span>,</span>
+<span id="cb16-5"><a></a>    <span class="st">"valley_precip_3m_scaled"</span>,</span>
+<span id="cb16-6"><a></a>    <span class="st">"valley_precip_annual_scaled"</span>,</span>
+<span id="cb16-7"><a></a>    <span class="st">"valley_precip_annual_scaled_lagged"</span>,</span>
+<span id="cb16-8"><a></a>    <span class="st">"basin_precip_3m_scaled"</span>,</span>
+<span id="cb16-9"><a></a>    <span class="st">"basin_precip_annual_scaled"</span>,</span>
+<span id="cb16-10"><a></a>    <span class="st">"basin_precip_annual_scaled_lagged"</span>,</span>
+<span id="cb16-11"><a></a>    <span class="st">"swc_australia_scaled"</span>,</span>
+<span id="cb16-12"><a></a>    <span class="st">"swc_australia_scaled_lagged"</span></span>
+<span id="cb16-13"><a></a>  )</span>
+<span id="cb16-14"><a></a></span>
+<span id="cb16-15"><a></a>pred_newdata <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb16-16"><a></a>    <span class="fu">tibble</span>(</span>
+<span id="cb16-17"><a></a>        <span class="at">Scenario =</span> <span class="st">"Baseline"</span>,</span>
+<span id="cb16-18"><a></a>        <span class="at">pct_change =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb16-19"><a></a>        <span class="at">wetland_flow_3m_scaled =</span> <span class="dv">0</span>,</span>
+<span id="cb16-20"><a></a>        <span class="at">wetland_flow_annual_scaled =</span> <span class="dv">0</span>,</span>
+<span id="cb16-21"><a></a>        <span class="at">wetland_flow_annual_scaled_lagged =</span> <span class="dv">0</span>,</span>
+<span id="cb16-22"><a></a>        <span class="at">total_basin_flow_3m_scaled =</span> <span class="dv">0</span>,</span>
+<span id="cb16-23"><a></a>        <span class="at">total_basin_flow_annual_scaled =</span> <span class="dv">0</span>,</span>
+<span id="cb16-24"><a></a>        <span class="at">total_basin_flow_annual_scaled_lagged =</span> <span class="dv">0</span>,</span>
+<span id="cb16-25"><a></a>        <span class="at">Wetland =</span> wetland</span>
+<span id="cb16-26"><a></a>    ),</span>
+<span id="cb16-27"><a></a>    scenarios</span>
+<span id="cb16-28"><a></a>)</span>
+<span id="cb16-29"><a></a></span>
+<span id="cb16-30"><a></a>pred_newdata[nuisance_vars] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>and predict!</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>model <span class="ot">&lt;-</span> overall_abund</span>
+<span id="cb17-2"><a></a>draws <span class="ot">&lt;-</span> <span class="fu">posterior_epred</span>(model, <span class="at">newdata =</span> pred_newdata, <span class="at">re_formula =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a></a>    <span class="fu">t</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a></a>    <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a></a>    <span class="fu">mutate</span>(<span class="at">scenario =</span> pred_newdata<span class="sc">$</span>Scenario) <span class="sc">|&gt;</span></span>
+<span id="cb17-6"><a></a>    <span class="fu">pivot_longer</span>(<span class="sc">-</span>scenario, <span class="at">names_to =</span> <span class="st">".draw"</span>, <span class="at">values_to =</span> <span class="st">".value"</span>)</span>
+<span id="cb17-7"><a></a></span>
+<span id="cb17-8"><a></a>draws_with_pct <span class="ot">&lt;-</span> draws <span class="sc">|&gt;</span></span>
+<span id="cb17-9"><a></a>    <span class="fu">group_by</span>(.draw) <span class="sc">|&gt;</span></span>
+<span id="cb17-10"><a></a>    <span class="fu">mutate</span>(</span>
+<span id="cb17-11"><a></a>      <span class="at">baseline_val =</span> .value[scenario <span class="sc">==</span> <span class="st">"Baseline"</span>],</span>
+<span id="cb17-12"><a></a>      <span class="at">percent_change =</span> (.value <span class="sc">-</span> baseline_val) <span class="sc">/</span> baseline_val <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb17-13"><a></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb17-14"><a></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb17-15"><a></a></span>
+<span id="cb17-16"><a></a>  </span>
+<span id="cb17-17"><a></a></span>
+<span id="cb17-18"><a></a>summary_results <span class="ot">&lt;-</span> draws_with_pct <span class="sc">|&gt;</span></span>
+<span id="cb17-19"><a></a>    <span class="fu">group_by</span>(scenario) <span class="sc">|&gt;</span></span>
+<span id="cb17-20"><a></a>    <span class="fu">median_hdci</span>(percent_change, .value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-21"><a></a>    <span class="fu">mutate</span>(<span class="at">wetland_name =</span> wetland)</span>
+<span id="cb17-22"><a></a>summary_results <span class="sc">|&gt;</span> </span>
+<span id="cb17-23"><a></a>    knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">scenario</th>
+<th style="text-align: right;">percent_change</th>
+<th style="text-align: right;">percent_change.lower</th>
+<th style="text-align: right;">percent_change.upper</th>
+<th style="text-align: right;">.value</th>
+<th style="text-align: right;">.value.lower</th>
+<th style="text-align: right;">.value.upper</th>
+<th style="text-align: right;">.width</th>
+<th style="text-align: left;">.point</th>
+<th style="text-align: left;">.interval</th>
+<th style="text-align: left;">wetland_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">29438.32</td>
+<td style="text-align: right;">14321.26</td>
+<td style="text-align: right;">52333.79</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: left;">hdci</td>
+<td style="text-align: left;">currawinya lakes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">-1.59</td>
+<td style="text-align: right;">3.96</td>
+<td style="text-align: right;">29781.41</td>
+<td style="text-align: right;">14440.50</td>
+<td style="text-align: right;">53485.19</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: left;">hdci</td>
+<td style="text-align: left;">currawinya lakes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">-4.74</td>
+<td style="text-align: right;">6.03</td>
+<td style="text-align: right;">29618.60</td>
+<td style="text-align: right;">14304.33</td>
+<td style="text-align: right;">52759.55</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: left;">hdci</td>
+<td style="text-align: left;">currawinya lakes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">-0.12</td>
+<td style="text-align: right;">-10.73</td>
+<td style="text-align: right;">10.99</td>
+<td style="text-align: right;">29409.34</td>
+<td style="text-align: right;">14029.94</td>
+<td style="text-align: right;">52754.00</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: left;">hdci</td>
+<td style="text-align: left;">currawinya lakes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">1.90</td>
+<td style="text-align: right;">-1.97</td>
+<td style="text-align: right;">5.76</td>
+<td style="text-align: right;">29993.15</td>
+<td style="text-align: right;">14641.39</td>
+<td style="text-align: right;">54073.43</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: left;">hdci</td>
+<td style="text-align: left;">currawinya lakes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S5</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">-7.50</td>
+<td style="text-align: right;">8.70</td>
+<td style="text-align: right;">29689.96</td>
+<td style="text-align: right;">14180.83</td>
+<td style="text-align: right;">52998.28</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: left;">hdci</td>
+<td style="text-align: left;">currawinya lakes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S6</td>
+<td style="text-align: right;">-0.19</td>
+<td style="text-align: right;">-15.63</td>
+<td style="text-align: right;">16.55</td>
+<td style="text-align: right;">29421.85</td>
+<td style="text-align: right;">13612.13</td>
+<td style="text-align: right;">53074.35</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">median</td>
+<td style="text-align: left;">hdci</td>
+<td style="text-align: left;">currawinya lakes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="walk-through-for-one-wetland-2" class="slide level2 smaller">
+<h2>Walk through for one wetland</h2>
+<p>and we can make some basic plots as well:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(summary_results <span class="sc">|&gt;</span> <span class="fu">filter</span>(scenario <span class="sc">!=</span> <span class="st">"Baseline"</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">scenario =</span> <span class="fu">factor</span>(scenario, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"S1"</span>, <span class="st">"S4"</span>, <span class="st">"S2"</span>, <span class="st">"S5"</span>, <span class="st">"S3"</span>, <span class="st">"S6"</span>))), <span class="fu">aes</span>(<span class="at">x =</span> scenario, <span class="at">y =</span> percent_change)) <span class="sc">+</span></span>
+<span id="cb18-2"><a></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb18-3"><a></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> percent_change.lower, <span class="at">ymax =</span> percent_change.upper), <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a></a>    <span class="fu">labs</span>(</span>
+<span id="cb18-5"><a></a>        <span class="at">x =</span> <span class="st">"Climate Scenario"</span>,</span>
+<span id="cb18-6"><a></a>        <span class="at">y =</span> <span class="st">"Percent Change from Baseline"</span></span>
+<span id="cb18-7"><a></a>    ) <span class="sc">+</span></span>
+<span id="cb18-8"><a></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-9"><a></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb18-10"><a></a></span>
+<span id="cb18-11"><a></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(summary_results  <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">scenario =</span> <span class="fu">factor</span>(scenario, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Baseline"</span>, <span class="st">"S1"</span>, <span class="st">"S4"</span>, <span class="st">"S2"</span>, <span class="st">"S5"</span>, <span class="st">"S3"</span>, <span class="st">"S6"</span>))), <span class="fu">aes</span>(<span class="at">x =</span> scenario, <span class="at">y =</span> .value)) <span class="sc">+</span></span>
+<span id="cb18-12"><a></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb18-13"><a></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> .value.lower, <span class="at">ymax =</span> .value.upper), <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb18-14"><a></a>    <span class="fu">labs</span>(</span>
+<span id="cb18-15"><a></a>        <span class="at">x =</span> <span class="st">"Climate Scenario"</span>,</span>
+<span id="cb18-16"><a></a>        <span class="at">y =</span> <span class="st">"Absolute Change"</span></span>
+<span id="cb18-17"><a></a>    ) <span class="sc">+</span></span>
+<span id="cb18-18"><a></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-19"><a></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb18-20"><a></a>p1<span class="sc">+</span>p2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+
+</div>
+<img data-src="slides_files/figure-revealjs/plot-1.png" width="960" class="r-stretch"></section>
+<section id="all-wetlands" class="slide level2 smaller">
+<h2>All wetlands</h2>
+<p>For all wetlands, we made a simple function (see workshop website)</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>wetlands <span class="ot">&lt;-</span> valley_climate_projections_with_wetlands <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a></a>  <span class="fu">pull</span>(Wetland) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a></a>  <span class="fu">unique</span>() </span>
+<span id="cb19-4"><a></a></span>
+<span id="cb19-5"><a></a>overall_abund <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/m1.1.rds"</span>)</span>
+<span id="cb19-6"><a></a>results <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">length</span>(wetlands))</span>
+<span id="cb19-7"><a></a></span>
+<span id="cb19-8"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(wetlands)) {</span>
+<span id="cb19-9"><a></a>  <span class="co"># print(wetlands[i])</span></span>
+<span id="cb19-10"><a></a>  </span>
+<span id="cb19-11"><a></a>  results[[i]] <span class="ot">&lt;-</span> <span class="fu">get_climate_predictions</span>(</span>
+<span id="cb19-12"><a></a>    <span class="at">wetland =</span> wetlands[i],</span>
+<span id="cb19-13"><a></a>    <span class="at">model =</span> overall_abund</span>
+<span id="cb19-14"><a></a>  )</span>
+<span id="cb19-15"><a></a>}</span>
+<span id="cb19-16"><a></a></span>
+<span id="cb19-17"><a></a>combined_df_overall <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(results, <span class="st">"summary"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-18"><a></a>  <span class="fu">bind_rows</span>()</span>
+<span id="cb19-19"><a></a><span class="fu">glimpse</span>(combined_df_overall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 231
+Columns: 11
+$ scenario             &lt;chr&gt; "Baseline", "S1", "S2", "S3", "S4", "S5", "S6", "…
+$ percent_change       &lt;dbl&gt; 0.00000000, 1.24296613, 0.46254041, -0.12223021, …
+$ percent_change.lower &lt;dbl&gt; 0.0000000, -1.5939187, -4.7389536, -10.7330745, -…
+$ percent_change.upper &lt;dbl&gt; 0.000000, 3.961376, 6.025878, 10.994449, 5.758168…
+$ .value               &lt;dbl&gt; 29438.318, 29781.408, 29618.603, 29409.344, 29993…
+$ .value.lower         &lt;dbl&gt; 14321.2642, 14440.5021, 14304.3311, 14029.9357, 1…
+$ .value.upper         &lt;dbl&gt; 52333.790, 53485.190, 52759.547, 52753.995, 54073…
+$ .width               &lt;dbl&gt; 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0…
+$ .point               &lt;chr&gt; "median", "median", "median", "median", "median",…
+$ .interval            &lt;chr&gt; "hdci", "hdci", "hdci", "hdci", "hdci", "hdci", "…
+$ wetland_name         &lt;chr&gt; "currawinya lakes", "currawinya lakes", "currawin…</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="environmental-water-analysis" class="title-slide slide level1 center">
+<h1>Environmental water analysis</h1>
+
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
+<ul>
+<li>This is very similar to the climate analysis, but we use the model to predict abundance as if environmental flows had not existed previously</li>
+<li>Again, I’m going to skip the cleaning here - we can work through the website as needed</li>
 </ul>
 </section>
-<section class="slide level2">
+<section id="cleaned-data" class="slide level2 scrollable">
+<h2>Cleaned data</h2>
+<ul>
+<li>Ultimately we end up with an annual dataset that has two possible columns for total flow at the upstream gauge - one column has actual, and one has actual minus environmental flows.</li>
+<li>I’ve also scaled variables here</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>wetlands_with_valleys <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetlands_with_valleys.csv"</span>) </span>
+<span id="cb21-2"><a></a>asset_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/asset_precip_data.csv"</span>)</span>
+<span id="cb21-3"><a></a>valley_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_precip_data.csv"</span>)</span>
+<span id="cb21-4"><a></a>precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/precip_data.csv"</span>)</span>
+<span id="cb21-5"><a></a></span>
+<span id="cb21-6"><a></a><span class="co"># SWC (flooding) data</span></span>
+<span id="cb21-7"><a></a>swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/australia_annual_water_area_presence.csv"</span>)</span>
+<span id="cb21-8"><a></a>wetlands_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetland_inundation_results.csv"</span>)</span>
+<span id="cb21-9"><a></a>basin_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/basin_inundation_results.csv"</span>) </span>
+<span id="cb21-10"><a></a>valleys_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_inundation_results.csv"</span>)</span>
+<span id="cb21-11"><a></a></span>
+<span id="cb21-12"><a></a><span class="co"># Flow data</span></span>
+<span id="cb21-13"><a></a>combined_flow_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_data.csv"</span>)</span>
+<span id="cb21-14"><a></a>combined_flow_metadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_metadata.csv"</span>)</span>
+<span id="cb21-15"><a></a>total_flow <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/total_flow.csv"</span>)</span>
+<span id="cb21-16"><a></a>ewater <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/eflows.csv"</span>)</span>
+<span id="cb21-17"><a></a>ewater_wy <span class="ot">&lt;-</span> ewater <span class="sc">|&gt;</span></span>
+<span id="cb21-18"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-19"><a></a>    <span class="at">month_num =</span> <span class="fu">match</span>(month, month.name),</span>
+<span id="cb21-20"><a></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(year, month_num, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">"-"</span>)),</span>
+<span id="cb21-21"><a></a>    <span class="co"># Nov-Oct water year: Nov+ belongs to following year's Oct label</span></span>
+<span id="cb21-22"><a></a>    <span class="at">water_year_nov =</span> <span class="fu">if_else</span>(month_num <span class="sc">&gt;=</span> <span class="dv">11</span>, year <span class="sc">+</span> <span class="dv">1</span>L, <span class="fu">as.integer</span>(year))</span>
+<span id="cb21-23"><a></a>  )</span>
+<span id="cb21-24"><a></a></span>
+<span id="cb21-25"><a></a><span class="co"># Annual summary</span></span>
+<span id="cb21-26"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_wy <span class="sc">|&gt;</span></span>
+<span id="cb21-27"><a></a>  <span class="fu">summarise</span>(</span>
+<span id="cb21-28"><a></a>    <span class="fu">across</span>(<span class="fu">c</span>(marebone_total, env_flow, EWA, FMZ, irrigation, baseflow, other), sum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-29"><a></a>    <span class="at">.by =</span> water_year_nov</span>
+<span id="cb21-30"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-31"><a></a>  <span class="fu">arrange</span>(water_year_nov)</span>
+<span id="cb21-32"><a></a></span>
+<span id="cb21-33"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
+<span id="cb21-34"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-35"><a></a>    <span class="at">non_env_flow =</span> marebone_total <span class="sc">-</span> env_flow </span>
+<span id="cb21-36"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb21-37"><a></a>    <span class="fu">select</span>(water_year_nov, non_env_flow, env_flow, marebone_total)</span>
+<span id="cb21-38"><a></a></span>
+<span id="cb21-39"><a></a><span class="co"># Now the 3m</span></span>
+<span id="cb21-40"><a></a>ewater_wy_3m <span class="ot">&lt;-</span> ewater <span class="sc">|&gt;</span></span>
+<span id="cb21-41"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-42"><a></a>    <span class="at">month_num =</span> <span class="fu">match</span>(month, month.name),</span>
+<span id="cb21-43"><a></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(year, month_num, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">"-"</span>)),</span>
+<span id="cb21-44"><a></a>    <span class="co"># Nov-Oct water year: Nov+ belongs to following year's Oct label</span></span>
+<span id="cb21-45"><a></a>    <span class="at">water_year_nov =</span> <span class="fu">if_else</span>(month_num <span class="sc">&gt;=</span> <span class="dv">11</span>, year <span class="sc">+</span> <span class="dv">1</span>L, <span class="fu">as.integer</span>(year))</span>
+<span id="cb21-46"><a></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-47"><a></a>    <span class="fu">filter</span>(month_num <span class="sc">&gt;=</span> <span class="dv">7</span>, month_num <span class="sc">&lt;</span> <span class="dv">10</span>) <span class="co"># preceding 3 months</span></span>
+<span id="cb21-48"><a></a></span>
+<span id="cb21-49"><a></a>ewater_annual_3m <span class="ot">&lt;-</span> ewater_wy_3m <span class="sc">|&gt;</span></span>
+<span id="cb21-50"><a></a>  <span class="fu">summarise</span>(</span>
+<span id="cb21-51"><a></a>    <span class="at">marebone_total_3m =</span> <span class="fu">sum</span>(marebone_total, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-52"><a></a>    <span class="at">env_flow_3m =</span> <span class="fu">sum</span>(env_flow, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-53"><a></a>    <span class="at">EWA_3m =</span> <span class="fu">sum</span>(EWA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-54"><a></a>    <span class="at">FMZ_3m =</span> <span class="fu">sum</span>(FMZ, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-55"><a></a>    <span class="at">irrigation_3m =</span> <span class="fu">sum</span>(irrigation, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-56"><a></a>    <span class="at">baseflow_3m =</span> <span class="fu">sum</span>(baseflow, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-57"><a></a>    <span class="at">other_3m =</span> <span class="fu">sum</span>(other, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-58"><a></a>    <span class="at">.by =</span> water_year_nov</span>
+<span id="cb21-59"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-60"><a></a>  <span class="fu">arrange</span>(water_year_nov)</span>
+<span id="cb21-61"><a></a></span>
+<span id="cb21-62"><a></a>ewater_annual_3m <span class="ot">&lt;-</span> ewater_annual_3m <span class="sc">|&gt;</span></span>
+<span id="cb21-63"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-64"><a></a>    <span class="at">non_env_flow_3m =</span> marebone_total_3m <span class="sc">-</span> env_flow_3m</span>
+<span id="cb21-65"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb21-66"><a></a>    <span class="fu">select</span>(water_year_nov, non_env_flow_3m, env_flow_3m, marebone_total_3m)</span>
+<span id="cb21-67"><a></a></span>
+<span id="cb21-68"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
+<span id="cb21-69"><a></a>  <span class="fu">left_join</span>(ewater_annual_3m, <span class="at">by =</span> <span class="st">"water_year_nov"</span>)</span>
+<span id="cb21-70"><a></a></span>
+<span id="cb21-71"><a></a>mac_scaling <span class="ot">&lt;-</span> combined_flow_metadata <span class="sc">|&gt;</span></span>
+<span id="cb21-72"><a></a>    <span class="fu">filter</span>(wetlands <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-73"><a></a>    <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-74"><a></a>    <span class="fu">select</span>(</span>
+<span id="cb21-75"><a></a>      wetland_mean_flow_3m,</span>
+<span id="cb21-76"><a></a>      wetland_sd_flow_3m,</span>
+<span id="cb21-77"><a></a>      wetland_mean_flow_annual,</span>
+<span id="cb21-78"><a></a>      wetland_sd_flow_annual</span>
+<span id="cb21-79"><a></a>    )</span>
+<span id="cb21-80"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
+<span id="cb21-81"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-82"><a></a>    <span class="at">wetland_flow_annual_scaled_total   =</span> (marebone_total <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_annual) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_annual,</span>
+<span id="cb21-83"><a></a>    <span class="at">wetland_flow_annual_scaled_non_env =</span> ((non_env_flow) <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_annual) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_annual,</span>
+<span id="cb21-84"><a></a>    <span class="at">wetland_flow_annual_scaled_total_lagged =</span> <span class="fu">lag</span>(wetland_flow_annual_scaled_total),</span>
+<span id="cb21-85"><a></a>    <span class="at">wetland_flow_annual_scaled_non_env_lagged =</span> <span class="fu">lag</span>(wetland_flow_annual_scaled_non_env),</span>
+<span id="cb21-86"><a></a>    <span class="at">wetland_flow_3m_scaled_total   =</span> (marebone_total_3m <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_3m) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_3m,</span>
+<span id="cb21-87"><a></a>    <span class="at">wetland_flow_3m_scaled_non_env =</span> ((non_env_flow_3m ) <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_3m) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_3m,</span>
+<span id="cb21-88"><a></a>    <span class="at">wetland_flow_3m_scaled_total_lagged =</span> <span class="fu">lag</span>(wetland_flow_3m_scaled_total),</span>
+<span id="cb21-89"><a></a>    <span class="at">wetland_flow_3m_scaled_non_env_lagged =</span> <span class="fu">lag</span>(wetland_flow_3m_scaled_non_env)</span>
+<span id="cb21-90"><a></a>    </span>
+<span id="cb21-91"><a></a>  )</span>
+<span id="cb21-92"><a></a></span>
+<span id="cb21-93"><a></a></span>
+<span id="cb21-94"><a></a><span class="fu">glimpse</span>(ewater_annual)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 29
+Columns: 15
+$ water_year_nov                            &lt;int&gt; 1996, 1997, 1998, 1999, 2000…
+$ non_env_flow                              &lt;int&gt; 93288, 158041, 648163, 35858…
+$ env_flow                                  &lt;int&gt; 166873, 38752, 8838, 113407,…
+$ marebone_total                            &lt;int&gt; 260161, 196793, 657001, 4719…
+$ non_env_flow_3m                           &lt;int&gt; 64480, 20927, 425173, 17426,…
+$ env_flow_3m                               &lt;int&gt; 129325, 0, 5583, 38692, 0, 8…
+$ marebone_total_3m                         &lt;int&gt; 193805, 20927, 430756, 56118…
+$ wetland_flow_annual_scaled_total          &lt;dbl&gt; -0.56254123, -0.71687088, 0.…
+$ wetland_flow_annual_scaled_non_env        &lt;dbl&gt; -0.96895221, -0.81124946, 0.…
+$ wetland_flow_annual_scaled_total_lagged   &lt;dbl&gt; NA, -0.56254123, -0.71687088…
+$ wetland_flow_annual_scaled_non_env_lagged &lt;dbl&gt; NA, -0.96895221, -0.81124946…
+$ wetland_flow_3m_scaled_total              &lt;dbl&gt; 0.2887642, -0.9688809, 2.012…
+$ wetland_flow_3m_scaled_non_env            &lt;dbl&gt; -0.6520435, -0.9688809, 1.97…
+$ wetland_flow_3m_scaled_total_lagged       &lt;dbl&gt; NA, 0.2887642, -0.9688809, 2…
+$ wetland_flow_3m_scaled_non_env_lagged     &lt;dbl&gt; NA, -0.6520435, -0.9688809, …</code></pre>
+</div>
+</div>
+</section>
+<section id="cleaned-data-1" class="slide level2 scrollable">
+<h2>Cleaned data</h2>
 
-<p>Thank you!</p>
+<img data-src="slides_files/figure-revealjs/plot flows-1.png" width="960" class="r-stretch"></section>
+<section id="other-variables" class="slide level2">
+<h2>Other variables</h2>
+<p>We load in other variables that we need</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>full_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">surv_year =</span> <span class="fu">seq</span>(<span class="dv">2010</span>, <span class="dv">2024</span>), <span class="at">Wetland =</span> <span class="st">"macquarie marshes"</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb23-3"><a></a>    asset_precip <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Wetland =</span> <span class="fu">str_to_lower</span>(Wetland)),</span>
+<span id="cb23-4"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, Wetland <span class="sc">==</span> Wetland)</span>
+<span id="cb23-5"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-6"><a></a>  <span class="fu">left_join</span>(wetlands_with_valleys) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-7"><a></a>  <span class="fu">mutate</span>(<span class="at">ValleyName =</span> <span class="fu">str_to_lower</span>(ValleyName)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-8"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb23-9"><a></a>    valley_precip,</span>
+<span id="cb23-10"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, ValleyName <span class="sc">==</span> valleyname)</span>
+<span id="cb23-11"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-12"><a></a>  <span class="fu">left_join</span>(precip, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-13"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb23-14"><a></a>    combined_flow_data,</span>
+<span id="cb23-15"><a></a>    <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>, Wetland <span class="sc">==</span> wetlands)</span>
+<span id="cb23-16"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-17"><a></a>  <span class="fu">filter</span>(</span>
+<span id="cb23-18"><a></a>    <span class="sc">!</span><span class="fu">is.na</span>(wetland_flow_annual_scaled)</span>
+<span id="cb23-19"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-20"><a></a>  <span class="fu">left_join</span>(total_flow, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-21"><a></a>  <span class="fu">left_join</span>(swc, <span class="fu">join_by</span>(<span class="st">'surv_year'</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-22"><a></a>  <span class="fu">select</span>(</span>
+<span id="cb23-23"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb23-24"><a></a>      subwetland,</span>
+<span id="cb23-25"><a></a>      asset_precip_3m,</span>
+<span id="cb23-26"><a></a>      asset_precip,</span>
+<span id="cb23-27"><a></a>      X,</span>
+<span id="cb23-28"><a></a>      valley_precip_3m,</span>
+<span id="cb23-29"><a></a>      valley_precip,</span>
+<span id="cb23-30"><a></a>      basin_precip_3m,</span>
+<span id="cb23-31"><a></a>      basin_precip,</span>
+<span id="cb23-32"><a></a>      flow_3m,</span>
+<span id="cb23-33"><a></a>      flow,</span>
+<span id="cb23-34"><a></a>      water_area_m2</span>
+<span id="cb23-35"><a></a>    )</span>
+<span id="cb23-36"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-37"><a></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>())</span>
+<span id="cb23-38"><a></a><span class="fu">glimpse</span>(full_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 15
+Columns: 26
+$ surv_year                             &lt;int&gt; 2010, 2011, 2012, 2013, 2014, 20…
+$ Wetland                               &lt;chr&gt; "macquarie marshes", "macquarie …
+$ asset_precip_3m_scaled                &lt;dbl&gt; -0.9675553, 1.4123423, 0.1474943…
+$ asset_precip_3m_scaled_lagged         &lt;dbl&gt; -0.3837949, -0.9675553, 1.412342…
+$ asset_precip_annual_scaled            &lt;dbl&gt; 1.8418327, 0.8658600, 1.7528023,…
+$ asset_precip_annual_scaled_lagged     &lt;dbl&gt; 0.4172102, 1.8418327, 0.8658600,…
+$ ValleyName                            &lt;chr&gt; "macquarie", "macquarie", "macqu…
+$ valley_precip_3m_scaled               &lt;dbl&gt; 1.36581205, 0.04414472, -0.46531…
+$ valley_precip_3m_scaled_lagged        &lt;dbl&gt; -0.95506533, 1.36581205, 0.04414…
+$ valley_precip_annual_scaled           &lt;dbl&gt; 1.3449519, 0.9643699, 1.4774914,…
+$ valley_precip_annual_scaled_lagged    &lt;dbl&gt; -0.2753698, 1.3449519, 0.9643699…
+$ basin_precip_3m_scaled                &lt;dbl&gt; 1.67188815, -0.09464079, -0.4564…
+$ basin_precip_3m_scaled_lagged         &lt;dbl&gt; -0.73216346, 1.67188815, -0.0946…
+$ basin_precip_annual_scaled            &lt;dbl&gt; 1.5684099, 1.9777682, 1.4358435,…
+$ basin_precip_annual_scaled_lagged     &lt;dbl&gt; -0.4773504, 1.5684099, 1.9777682…
+$ wetland_flow_3m_scaled                &lt;dbl&gt; 0.61292904, -0.44054731, 0.94207…
+$ wetland_flow_3m_scaled_lagged         &lt;dbl&gt; -1.0095956, 0.6129290, -0.440547…
+$ wetland_flow_annual_scaled            &lt;dbl&gt; -0.16284194, 0.77331839, 0.86526…
+$ wetland_flow_annual_scaled_lagged     &lt;dbl&gt; -1.06454950, -0.16284194, 0.7733…
+$ total_basin_flow_3m_scaled            &lt;dbl&gt; -0.8768239, 0.6057034, 1.3086497…
+$ total_basin_flow_3m_scaled_lagged     &lt;dbl&gt; -1.1855967, -0.8768239, 0.605703…
+$ total_basin_flow_annual_scaled        &lt;dbl&gt; -1.14235219, 1.31015564, 0.49927…
+$ total_basin_flow_annual_scaled_lagged &lt;dbl&gt; -1.60873134, -1.14235219, 1.3101…
+$ swc_australia_scaled                  &lt;dbl&gt; 0.39636009, 0.27128474, 0.033972…
+$ swc_australia_scaled_lagged           &lt;dbl&gt; 0.17770098, 0.39636009, 0.271284…
+$ id                                    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1…</code></pre>
+</div>
+</div>
+</section>
+<section id="make-new-counterfactual-data" class="slide level2">
+<h2>Make new counterfactual data</h2>
+<p>and make the counterfactual datasets - one with environmental flow, one without</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>new_data_with_env <span class="ot">&lt;-</span> full_data <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a></a>  <span class="fu">filter</span>(Wetland <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a></a>  <span class="fu">select</span>(</span>
+<span id="cb25-4"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-5"><a></a>      wetland_flow_3m_scaled,</span>
+<span id="cb25-6"><a></a>      wetland_flow_annual_scaled,</span>
+<span id="cb25-7"><a></a>      wetland_flow_annual_scaled_lagged</span>
+<span id="cb25-8"><a></a>    )</span>
+<span id="cb25-9"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-10"><a></a>  <span class="fu">left_join</span>(ewater_annual, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year_nov"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-11"><a></a>  <span class="fu">rename</span>(</span>
+<span id="cb25-12"><a></a>    <span class="at">wetland_flow_3m_scaled =</span> wetland_flow_3m_scaled_total,</span>
+<span id="cb25-13"><a></a>    <span class="at">wetland_flow_annual_scaled =</span> wetland_flow_annual_scaled_total,</span>
+<span id="cb25-14"><a></a>    <span class="at">wetland_flow_annual_scaled_lagged =</span> wetland_flow_annual_scaled_total_lagged</span>
+<span id="cb25-15"><a></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-16"><a></a>    <span class="fu">select</span>(</span>
+<span id="cb25-17"><a></a>        <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-18"><a></a>          marebone_total,</span>
+<span id="cb25-19"><a></a>          env_flow,</span>
+<span id="cb25-20"><a></a>          non_env_flow,</span>
+<span id="cb25-21"><a></a>          marebone_total_3m,</span>
+<span id="cb25-22"><a></a>          env_flow_3m,</span>
+<span id="cb25-23"><a></a>          </span>
+<span id="cb25-24"><a></a>          wetland_flow_3m_scaled_non_env,</span>
+<span id="cb25-25"><a></a>          wetland_flow_3m_scaled_non_env_lagged,</span>
+<span id="cb25-26"><a></a>          wetland_flow_annual_scaled_non_env,</span>
+<span id="cb25-27"><a></a>          wetland_flow_annual_scaled_non_env_lagged</span>
+<span id="cb25-28"><a></a>        )</span>
+<span id="cb25-29"><a></a>    )<span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x, <span class="dv">0</span>)))<span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
+<span id="cb25-30"><a></a></span>
+<span id="cb25-31"><a></a></span>
+<span id="cb25-32"><a></a>new_data_no_env <span class="ot">&lt;-</span> full_data <span class="sc">|&gt;</span> </span>
+<span id="cb25-33"><a></a> </span>
+<span id="cb25-34"><a></a>  <span class="fu">filter</span>(Wetland <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-35"><a></a>  <span class="fu">select</span>(</span>
+<span id="cb25-36"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-37"><a></a>      wetland_flow_3m_scaled,</span>
+<span id="cb25-38"><a></a>      wetland_flow_annual_scaled,</span>
+<span id="cb25-39"><a></a>      wetland_flow_annual_scaled_lagged</span>
+<span id="cb25-40"><a></a>    )</span>
+<span id="cb25-41"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-42"><a></a>  <span class="fu">left_join</span>(ewater_annual, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year_nov"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-43"><a></a>  <span class="fu">rename</span>(</span>
+<span id="cb25-44"><a></a>    <span class="at">wetland_flow_3m_scaled =</span> wetland_flow_3m_scaled_non_env,</span>
+<span id="cb25-45"><a></a>    <span class="at">wetland_flow_annual_scaled =</span> wetland_flow_annual_scaled_non_env,</span>
+<span id="cb25-46"><a></a>    <span class="at">wetland_flow_annual_scaled_lagged =</span> wetland_flow_annual_scaled_non_env_lagged</span>
+<span id="cb25-47"><a></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-48"><a></a>    <span class="fu">select</span>(</span>
+<span id="cb25-49"><a></a>        <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-50"><a></a>          marebone_total,</span>
+<span id="cb25-51"><a></a>          env_flow,</span>
+<span id="cb25-52"><a></a>          </span>
+<span id="cb25-53"><a></a>          non_env_flow,</span>
+<span id="cb25-54"><a></a>          marebone_total_3m,</span>
+<span id="cb25-55"><a></a>          env_flow_3m,</span>
+<span id="cb25-56"><a></a>          </span>
+<span id="cb25-57"><a></a>          non_env_flow_3m,</span>
+<span id="cb25-58"><a></a>          </span>
+<span id="cb25-59"><a></a>          wetland_flow_3m_scaled_total,</span>
+<span id="cb25-60"><a></a>          wetland_flow_3m_scaled_total_lagged,</span>
+<span id="cb25-61"><a></a>          </span>
+<span id="cb25-62"><a></a>          wetland_flow_annual_scaled_total,</span>
+<span id="cb25-63"><a></a>          wetland_flow_annual_scaled_total_lagged</span>
+<span id="cb25-64"><a></a></span>
+<span id="cb25-65"><a></a>        )</span>
+<span id="cb25-66"><a></a>    ) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x, <span class="dv">0</span>)))<span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="get-some-predictions-and-make-plots" class="slide level2">
+<h2>Get some predictions and make plots</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="co">#| message: false</span></span>
+<span id="cb26-2"><a></a><span class="co">#| warning: false</span></span>
+<span id="cb26-3"><a></a><span class="co">#| label: "models"</span></span>
+<span id="cb26-4"><a></a><span class="co">#| code-fold: true</span></span>
+<span id="cb26-5"><a></a>overall_abund <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/m1.1.rds"</span>)</span>
+<span id="cb26-6"><a></a></span>
+<span id="cb26-7"><a></a>predicted_with_env <span class="ot">&lt;-</span> overall_abund <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_with_env, <span class="at">re_formula =</span> <span class="cn">NULL</span>)</span>
+<span id="cb26-9"><a></a>predicted_no_env <span class="ot">&lt;-</span> overall_abund <span class="sc">%&gt;%</span></span>
+<span id="cb26-10"><a></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_no_env, <span class="at">re_formula =</span> <span class="cn">NULL</span>)</span>
+<span id="cb26-11"><a></a></span>
+<span id="cb26-12"><a></a>output_df <span class="ot">&lt;-</span> predicted_with_env <span class="sc">|&gt;</span></span>
+<span id="cb26-13"><a></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb26-14"><a></a>  <span class="fu">filter</span>(surv_year <span class="sc">!=</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-15"><a></a>  <span class="fu">select</span>(surv_year, .draw, .epred) <span class="sc">|&gt;</span></span>
+<span id="cb26-16"><a></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb26-17"><a></a>    predicted_no_env <span class="sc">|&gt;</span></span>
+<span id="cb26-18"><a></a>      <span class="fu">filter</span>(surv_year <span class="sc">!=</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-19"><a></a>      <span class="fu">select</span>(surv_year, .draw, <span class="at">.epred_no_env =</span> .epred),</span>
+<span id="cb26-20"><a></a>    <span class="at">by =</span> <span class="fu">join_by</span>(surv_year, .draw)</span>
+<span id="cb26-21"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb26-22"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-23"><a></a>    <span class="at">diff =</span> .epred <span class="sc">-</span> .epred_no_env,</span>
+<span id="cb26-24"><a></a>    <span class="at">pct_diff =</span> (.epred <span class="sc">-</span> .epred_no_env) <span class="sc">/</span> .epred <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb26-25"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb26-26"><a></a>  <span class="fu">group_by</span>(surv_year) <span class="sc">|&gt;</span></span>
+<span id="cb26-27"><a></a>  <span class="fu">median_hdci</span>(diff, pct_diff, <span class="at">.width =</span> <span class="fl">0.95</span>)</span>
+<span id="cb26-28"><a></a></span>
+<span id="cb26-29"><a></a>overall_abund_pct <span class="ot">&lt;-</span> output_df <span class="sc">|&gt;</span> </span>
+<span id="cb26-30"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> surv_year, <span class="at">y =</span> pct_diff )) <span class="sc">+</span></span>
+<span id="cb26-31"><a></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> pct_diff.lower, <span class="at">ymax =</span> pct_diff.upper), <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb26-32"><a></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb26-33"><a></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb26-34"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb26-35"><a></a>    <span class="at">x =</span> <span class="st">"Survey Year"</span>,</span>
+<span id="cb26-36"><a></a>    <span class="at">y =</span> <span class="st">"Percentage Difference"</span></span>
+<span id="cb26-37"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb26-38"><a></a>  <span class="fu">my_theme</span>() <span class="sc">+</span></span>
+<span id="cb26-39"><a></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="get-some-predictions-and-make-plots-1" class="slide level2">
+<h2>Get some predictions and make plots</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a>overall_abund_pct</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
 
 
-</section></section>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
@@ -428,7 +1455,6 @@ Your Name
   <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -444,14 +1470,13 @@ Your Name
       // https://revealjs.com/config/
       Reveal.initialize({
 'controlsAuto': true,
-'previewLinksAuto': true,
+'previewLinksAuto': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -577,7 +1602,7 @@ Your Name
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'fade',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',
@@ -622,7 +1647,7 @@ Your Name
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
