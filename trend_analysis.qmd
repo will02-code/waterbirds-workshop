@@ -5,9 +5,12 @@ title: "Trend analysis with `eawsAnalysis`"
 
 
 ```{r}
-
+# install.packages("remotes")
 # remotes::install_github("will02-code/eawsAnalysis")
 library(eawsAnalysis)
+library(magrittr)
+library(readr)
+
 
 ```
 
@@ -205,7 +208,9 @@ DT::datatable(
   ),
   class = 'compact stripe'
 ) |> 
-     DT::formatStyle( 0, target= 'row',lineHeight='60%')
+     DT::formatStyle( 0, target= 'row',lineHeight='60%') |> 
+     DT::formatRound(columns = c("mk_tau", "mk_logslope", "mk_percentslope", "mk_intercept"), digits = 2) |> 
+     DT::formatRound(columns = c("mk_p_value"), digits = 3)
 ```
 
 **Fitted model plot**
@@ -235,7 +240,9 @@ DT::datatable(
   ),
   class = 'compact stripe'
 ) |> 
-     DT::formatStyle( 0, target= 'row',lineHeight='60%')
+     DT::formatStyle( 0, target= 'row',lineHeight='60%')|> 
+     DT::formatRound(columns = c("mk_tau", "mk_logslope", "mk_percentslope", "mk_intercept", "long_term_avg"), digits = 2) |> 
+     DT::formatRound(columns = c("mk_p_value"), digits = 3)
 ```
 
 
@@ -278,7 +285,10 @@ DT::datatable(
   ),
   class = 'compact stripe'
 ) |> 
-     DT::formatStyle( 0, target= 'row',lineHeight='60%')
+     DT::formatStyle( 0, target= 'row',lineHeight='60%') |> 
+      
+     DT::formatRound(columns = c("mk_tau", "mk_logslope", "mk_percentslope", "mk_intercept"), digits = 2) |> 
+     DT::formatRound(columns = c("mk_p_value"), digits = 3)
 ```
 
 **Fitted model plot**
@@ -307,5 +317,116 @@ DT::datatable(
   ),
   class = 'compact stripe'
 ) |> 
-     DT::formatStyle( 0, target= 'row',lineHeight='60%')
+     DT::formatStyle( 0, target= 'row',lineHeight='60%') |> 
+     DT::formatRound(columns = c("mk_tau", "mk_logslope", "mk_percentslope", "mk_intercept", "long_term_avg"), digits = 2) |> 
+     DT::formatRound(columns = c("mk_p_value"), digits = 3)
+
+
 ```
+
+##### We can also get trends by SWC 
+To do this, we need to calculate SWC first and join it to the dataset
+
+```{r}
+#| label: calculate-swc
+#| code-summary: "Calculate surface water condition (SWC) and join to dataset"
+#| echo: false
+#| code-fold: true
+classify_swc <- function(df, sw_col = "surface_water", lag_col = "surface_water_lagged", 
+                          group_col = NULL, output_col = "condition") {
+  df |>
+    dplyr::group_by(across(all_of(group_col))) |>
+    dplyr::mutate(
+      sw_p  = dplyr::percent_rank(.data[[sw_col]])  * 100,
+      ant_p = dplyr::percent_rank(.data[[lag_col]]) * 100
+    ) |>
+    dplyr::ungroup() |>
+    dplyr::filter(!is.na(ant_p)) |>
+    dplyr::mutate(
+      "{output_col}" := dplyr::case_when(
+        sw_p <= 15 & ant_p <= 15  ~ "very dry",
+        sw_p <= 15 & ant_p <= 45  ~ "very dry",
+        sw_p <= 15 & ant_p <= 60  ~ "dry",
+        sw_p <= 15 & ant_p <= 85  ~ "dry",
+        sw_p <= 15 & ant_p >  85  ~ "moderate",
+        sw_p <= 45 & ant_p <= 15  ~ "very dry",
+        sw_p <= 45 & ant_p <= 60  ~ "dry",
+        sw_p <= 45 & ant_p <= 85  ~ "moderate",
+        sw_p <= 45 & ant_p >  85  ~ "wet",
+        sw_p <= 60 & ant_p <= 45  ~ "dry",
+        sw_p <= 60 & ant_p <= 60  ~ "moderate",
+        sw_p <= 60 & ant_p >  60  ~ "wet",
+        sw_p <= 85 & ant_p <= 15  ~ "dry",
+        sw_p <= 85 & ant_p <= 45  ~ "moderate",
+        sw_p <= 85 & ant_p <= 85  ~ "wet",
+        sw_p <= 85 & ant_p >  85  ~ "very wet",
+        sw_p <= 100 & ant_p <= 15 ~ "moderate",
+        sw_p <= 100 & ant_p <= 45 ~ "moderate",
+        sw_p <= 100 & ant_p <= 60 ~ "wet",
+        sw_p <= 100 & ant_p >  60 ~ "very wet",
+        TRUE ~ "unclassified"
+      )
+    ) %>% 
+      dplyr::select(tidyselect::all_of(group_col), year, !!rlang::sym(output_col))
+}
+
+valleys_swc <- readr::read_csv(("data/valley_inundation_results.csv")) |>
+  dplyr::group_by(valley_name) |>
+  dplyr::mutate(surface_water = inundated_area, surface_water_lagged = lag(inundated_area)) |>
+  classify_swc(group_col = "valley_name", output_col = "valley_condition")
+
+wetlands_swc <- readr::read_csv(("data/wetland_inundation_results.csv")) |>
+  dplyr::group_by(wetland_name) |>
+  dplyr::mutate(surface_water = inundated_area, surface_water_lagged = lag(inundated_area)) |>
+  classify_swc(group_col = "wetland_name", output_col = "wetland_condition") %>% 
+  dplyr::mutate(wetland_name = stringr::str_to_lower(wetland_name))
+
+basin_swc <- readr::read_csv(("data/basin_inundation_results.csv")) |>
+  dplyr::mutate(surface_water = inundated_area, surface_water_lagged = lag(inundated_area)) |>
+  classify_swc(output_col = "basin_condition")
+
+clean_dataset_with_swc <- data_clean %>% 
+  dplyr::left_join(valleys_swc, by = dplyr::join_by(ValleyName == valley_name, surv_year == year)) %>%
+  dplyr::left_join(wetlands_swc, by = dplyr::join_by(Wetland == wetland_name, surv_year == year)) %>%
+  dplyr::left_join(basin_swc, by = dplyr::join_by(surv_year == year)) 
+
+
+
+
+```
+
+
+
+```{r}
+#| label: run-models-with-swc
+#| code-summary: "Run models with surface water condition (SWC)"
+#| echo: false
+
+result_fx_swc <- clean_data_run_models(
+  dataset = clean_dataset_with_swc,
+  programs = c("Eastern Australian Survey"),
+  metric = "abundance",
+  wetlands = NULL,
+  valleys = NULL,
+  grouping_cols = "fx_group",
+  basinDiv = NULL, 
+  decade_analysis = FALSE, 
+  trend_line = TRUE,
+  by_condition = "basin_condition"
+)
+DT::datatable(
+  result_fx_swc[[3]],
+  options = list(
+    pageLength = 25,
+    autoWidth = TRUE,
+    scrollX = TRUE,
+    dom = 'lrtip'  # Remove the filter box if you want more compact layout
+  ),
+  class = 'compact stripe'
+) |> 
+     DT::formatStyle( 0, target= 'row',lineHeight='60%')|> 
+     DT::formatRound(columns = c("mk_tau", "mk_logslope", "mk_percentslope", "mk_intercept", "long_term_avg"), digits = 2) |> 
+     DT::formatRound(columns = c("mk_p_value"), digits = 3)
+
+```
+

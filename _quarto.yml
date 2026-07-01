@@ -22,9 +22,7 @@ website:
 
 format:
   html:
-    theme:
-      - cosmo
-      - brand
+    theme: [cosmo, custom.scss]
     css: styles.css
     toc: true
     df-print: tibble

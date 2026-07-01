@@ -1,0 +1,18 @@
+/*-- scss:defaults --*/
+
+// Override primary colors
+$primary: #000000;       // UNSW Black
+$secondary: #FCE500;     // UNSW Yellow
+$body-bg: #F8F9FA;
+
+// Apply typography (UNSW commonly uses Arial or similar sans-serif fonts)
+$font-family-base: "Roboto", sans-serif;
+
+// Button coloring
+$btn-primary-bg: $primary;
+$btn-secondary-bg: $secondary;
+$btn-secondary-color: #000;
+
+/*-- scss:rules --*/
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");

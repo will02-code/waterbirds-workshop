@@ -238,6 +238,8 @@ scenarios <- valley_climate_projections_with_wetlands |>
       Wetland = wetland
     ) |>
     select(-basin_flow_zscore_3m, -basin_flow_zscore_annual)
+
+
 ```
 
 
@@ -282,7 +284,7 @@ glimpse(pred_newdata)
 
 ```
 
-Now we predict. We use `posterior_epred()`, not `posterior_predict()` to eliminate noise from residuals, and just focus on the estimate for the expected value.  
+Now we predict. We use `posterior_epred()`, not `posterior_predict()` to eliminate noise from residuals, and just focus on the estimate for the mean.  
 We also calculate the estimated percent change from the baseline.
 
 ```{r}
@@ -290,6 +292,9 @@ We also calculate the estimated percent change from the baseline.
 #| warning: false
 #| label: "predictions"
 model <- overall_abund
+
+
+
 draws <- posterior_epred(model, newdata = pred_newdata, re_formula = NULL) |>
     t() |>
     as_tibble() |>
@@ -308,7 +313,7 @@ draws_with_pct <- draws |>
 
 summary_results <- draws_with_pct |>
     group_by(scenario) |>
-    median_hdci(percent_change, .value) |>
+    median_hdci(percent_change, .value, na.rm = TRUE) |>
     mutate(wetland_name = wetland)
 summary_results
 

@@ -3,6 +3,7 @@ title: "Waterbird workshop"
 ---
 
 This workshop is designed to provide an introduction to the analysis of waterbird data. The workshop will cover the following topics:
+
 1. Extracting waterbird data and performing trend analysis
 2. Making models
 3. Climate predictions based on those models

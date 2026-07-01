@@ -1,0 +1,223 @@
+---
+title: "Waterbird Analysis Workshop"
+author: "Will Wright"
+date: today
+format: 
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    code-fold: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Workshop Overview
+
+This workshop covers waterbird analysis in the Murray-Darling Basin:
+
+1. **Trend Analysis** — Extract data and identify population trends
+2. **Model Building** — Fit Bayesian hurdle-gamma models
+3. **Climate Predictions** — Project waterbird responses under climate scenarios
+4. **E-flow Analysis** — Macquarie Marshes environmental flow assessment
+
+# Trend Analysis {background-color="#000000"}
+
+## The `eawsAnalysis` Package
+
+```{r}
+#| echo: true
+#| eval: false
+library(eawsAnalysis)
+data(data_clean)
+```
+
+Purpose-built package for Eastern Australian Waterbird Survey analysis:
+
+- Data cleaning and filtering
+- Mann-Kendall trend tests
+- Visualization tools
+- Integrated workflow functions
+
+## Running Trend Analysis
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "2-8"
+result <- clean_data_run_models(
+  dataset = data_clean,
+  programs = c("Eastern Australian Survey"),
+  metric = "abundance",
+  wetlands = NULL,
+  valleys = NULL,
+  grouping_cols = "spp_code",
+  decade_analysis = FALSE
+)
+```
+
+Returns cleaned data, plots, and summary statistics
+
+## Trend Results
+
+```{r}
+#| echo: false
+#| eval: false
+plot <- result[[2]]
+plot
+```
+
+- Species-level trends over time
+- Mann-Kendall tau and p-values
+- Long-term averages and variability
+
+# Model Building {background-color="#000000"}
+
+## Model Structure
+
+**Hurdle-Gamma Model** for zero-inflated count data:
+
+::: {.incremental}
+- **Hurdle component** — Binomial model for presence/absence
+- **Gamma component** — Continuous positive values when present
+- **Bayesian estimation** — Full uncertainty quantification via MCMC
+:::
+
+## Environmental Predictors
+
+::: {.columns}
+::: {.column width="50%"}
+**Flow**
+- Wetland-level annual flow
+- Basin-level flow (3-month)
+- Lagged effects
+
+**Precipitation**
+- Asset-level rainfall
+- Valley-level rainfall
+- Annual totals
+:::
+
+::: {.column width="50%"}
+**Surface Water**
+- Wetland inundation
+- Basin inundation
+- Valley inundation
+- Lagged conditions
+:::
+:::
+
+## Prior Specification
+
+```{r}
+#| echo: true
+#| eval: false
+priors <- c(
+  prior(normal(0, 1), class = "b"),
+  prior(exponential(1), class = "sd"),
+  prior(exponential(1), class = "sigma")
+)
+```
+
+Weakly informative priors allow data to dominate
+
+## Model Fitting
+
+```{r}
+#| echo: true
+#| eval: false
+#| output: false
+m1.1 <- brm(
+  full_formula,
+  family = hurdle_gamma(),
+  data = full_data,
+  backend = "cmdstanr",
+  cores = 4,
+  chains = 4,
+  iter = 4000
+)
+```
+
+## Model Diagnostics
+
+Check convergence and fit:
+
+- **Trace plots** — MCMC chain mixing
+- **R-hat values** — Should be < 1.01
+- **Posterior predictive checks** — Compare simulated to observed data
+- **Bayesian R²** — Variance explained
+
+# Climate Predictions {background-color="#000000"}
+
+## Climate Scenarios
+
+Six projection scenarios from valley-level climate models:
+
+- **Historical baseline**
+- **SSP2-4.5** (moderate emissions)
+- **SSP3-7.0** (high emissions)
+- Multiple GCM projections
+
+Precipitation changes translated to flow z-scores
+
+## Prediction Workflow
+
+```{r}
+#| echo: true
+#| eval: false
+scenarios <- get_climate_predictions(
+  model = m1.1,
+  wetland = "macquarie marshes",
+  newdata = pred_newdata,
+  metric = "abundance"
+)
+```
+
+Generate posterior predictions for each scenario
+
+## Expected Changes
+
+```{r}
+#| echo: false
+#| eval: false
+# Plot showing percent change across scenarios
+```
+
+Quantify expected waterbird response:
+
+- Median change from baseline
+- Credible intervals
+- Probability of decline/increase
+
+# E-flow Analysis {background-color="#000000"}
+
+## Macquarie Marshes
+
+Environmental flow assessment:
+
+- Simulate different flow scenarios
+- Predict waterbird outcomes
+- Identify optimal flow regimes
+- Support adaptive management
+
+## Take-Home Messages
+
+::: {.incremental}
+1. **Integrated workflow** — `eawsAnalysis` package streamlines analysis
+2. **Bayesian models** — Full uncertainty quantification for predictions
+3. **Climate-ready** — Framework for scenario planning
+4. **Management-relevant** — E-flow tools support decision-making
+:::
+
+## Questions?
+
+**Resources:**
+
+- GitHub: [github.com/USERNAME/waterbirds-workshop](https://github.com/USERNAME/waterbirds-workshop)
+- Package: `remotes::install_github("will02-code/eawsAnalysis")`
+- Documentation: [Link to your website]
+
+---
+
+Thank you!
