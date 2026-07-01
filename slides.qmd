@@ -780,50 +780,6 @@ glimpse(combined_df_overall)
 
 ```
 
-and we can also make a plot similar to those in the report (though a bit different!)
-
-```{r}
-#| message: false
-#| warning: false
-#| label: "plot_all_wetlands"
-#| code-fold: true
-p <- ggplot2::ggplot() +
-    ggplot2::geom_pointrange(
-  data = combined_df_overall |> filter(scenario != "Baseline") |> mutate(scenario = factor(scenario, levels = c("S1", "S4", "S2", "S5", "S3", "S6")), wetland_name = factor(wetland_name, levels = rev(assets_coords))),
-  ggplot2::aes(
-  x = percent_change,
-  xmin = percent_change.lower,
-  xmax = percent_change.upper,
-  y = wetland_name
-  ),
-  # shape = 17,
-  # size = 7
-  ) +
-    facet_wrap(~scenario, nrow = 1, scales = "free_x",labeller = ggplot2::label_wrap_gen(width = 18)) +
-  ggplot2::geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
-  ggplot2::geom_hline(yintercept = 22.5, color = "black", size = 0.5, linetype = "dashed", alpha = 0.8) +
-  ggplot2::scale_y_discrete(
-    labels = str_to_title
-  ) +
-  my_theme() +
-  ggplot2::labs(
-  x = "Percent change",
-  y = "Asset"
-  ) +
-  ggplot2::theme(
-  axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
-  panel.spacing = ggplot2::unit(2, "lines"),
-  panel.background = ggplot2::element_rect(fill = "#F2F2F2"),
-  plot.subtitle = ggplot2::element_text(size = 14),
-  axis.text.y = ggtext::element_markdown(size = 24),
-  legend.position = "none"
-  ) 
-```
-
-## Plot {.smaller}
-```{r}
-p
-```
 
 # Environmental water analysis
 
@@ -946,6 +902,10 @@ glimpse(ewater_annual)
 ## Cleaned data {.scrollable}
 
 ```{r}
+#| message: false
+#| warning: false
+#| label: "plot flows"
+#| echo: false
 ggplot(ewater_annual, aes(x = water_year_nov)) +
   geom_line(aes(y = wetland_flow_annual_scaled_total, color = "Total flow")) +
   geom_line(aes(y = wetland_flow_annual_scaled_non_env, color = "Non-environmental flow")) +

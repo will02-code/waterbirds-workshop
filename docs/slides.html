@@ -353,13 +353,15 @@
 </section>
 <section id="full-dataframe" class="slide level2 scrollable">
 <h2>Full dataframe</h2>
-<p>Firstly, the raw data</p>
+<ol type="1">
+<li>The raw data</li>
+</ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co">#| label: print_cleaned_data</span></span>
 <span id="cb7-2"><a></a><span class="co">#| code-summary: "Print cleaned data"</span></span>
 <span id="cb7-3"><a></a><span class="co">#| echo: false</span></span>
 <span id="cb7-4"><a></a></span>
-<span id="cb7-5"><a></a>cleaned_data <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-5"><a></a>cleaned_data <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top">
 <colgroup>
@@ -456,487 +458,6 @@
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">42</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1988</td>
-<td style="text-align: right;">252167</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1989</td>
-<td style="text-align: right;">153102</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1990</td>
-<td style="text-align: right;">235349</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1991</td>
-<td style="text-align: right;">266310</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1992</td>
-<td style="text-align: right;">224555</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1993</td>
-<td style="text-align: right;">167564</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1994</td>
-<td style="text-align: right;">167144</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1995</td>
-<td style="text-align: right;">257526</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1996</td>
-<td style="text-align: right;">173445</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1997</td>
-<td style="text-align: right;">112142</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1998</td>
-<td style="text-align: right;">38408</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">1999</td>
-<td style="text-align: right;">87756</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2000</td>
-<td style="text-align: right;">112110</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">63855</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">42312</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">60887</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2004</td>
-<td style="text-align: right;">51364</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">96020</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">47561</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">37774</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">123310</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">34702</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">179476</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">229331</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">373163</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">64322</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">81837</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">55055</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">41500</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">77370</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">83860</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">49710</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">85999</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">53808</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">221624</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">194542</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">abundance</td>
-<td style="text-align: right;">2024</td>
-<td style="text-align: right;">171841</td>
-<td style="text-align: right;">-0.36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">-3.77</td>
-<td style="text-align: right;">88.75</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">42</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -944,12 +465,16 @@
 </section>
 <section id="basic-plot" class="slide level2">
 <h2>Basic plot</h2>
-<p>A simple plot</p>
+<ol start="2" type="1">
+<li>A simple plot</li>
+</ol>
 
 <img data-src="slides_files/figure-revealjs/fitted_model_plot-1.png" width="960" class="r-stretch"></section>
 <section id="summary-statistics" class="slide level2 smaller">
 <h2>Summary statistics</h2>
-<p>Finally, summary statistics</p>
+<ol start="3" type="1">
+<li>Summary statistics</li>
+</ol>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
@@ -1496,6 +1021,9 @@ $ id                                    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 1
 </table>
 </div>
 </div>
+</section>
+<section id="walk-through-for-one-wetland-2" class="slide level2 smaller">
+<h2>Walk through for one wetland</h2>
 <p>and we can make some basic plots as well:</p>
 <div class="cell">
 <details class="code-fold">
@@ -1566,45 +1094,7 @@ $ .interval            &lt;chr&gt; "hdci", "hdci", "hdci", "hdci", "hdci", "hdci
 $ wetland_name         &lt;chr&gt; "currawinya lakes", "currawinya lakes", "currawin…</code></pre>
 </div>
 </div>
-<p>and we can also make a plot similar to those in the report (though a bit different!)</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb21-2"><a></a>    ggplot2<span class="sc">::</span><span class="fu">geom_pointrange</span>(</span>
-<span id="cb21-3"><a></a>  <span class="at">data =</span> combined_df_overall <span class="sc">|&gt;</span> <span class="fu">filter</span>(scenario <span class="sc">!=</span> <span class="st">"Baseline"</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">scenario =</span> <span class="fu">factor</span>(scenario, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"S1"</span>, <span class="st">"S4"</span>, <span class="st">"S2"</span>, <span class="st">"S5"</span>, <span class="st">"S3"</span>, <span class="st">"S6"</span>)), <span class="at">wetland_name =</span> <span class="fu">factor</span>(wetland_name, <span class="at">levels =</span> <span class="fu">rev</span>(assets_coords))),</span>
-<span id="cb21-4"><a></a>  ggplot2<span class="sc">::</span><span class="fu">aes</span>(</span>
-<span id="cb21-5"><a></a>  <span class="at">x =</span> percent_change,</span>
-<span id="cb21-6"><a></a>  <span class="at">xmin =</span> percent_change.lower,</span>
-<span id="cb21-7"><a></a>  <span class="at">xmax =</span> percent_change.upper,</span>
-<span id="cb21-8"><a></a>  <span class="at">y =</span> wetland_name</span>
-<span id="cb21-9"><a></a>  ),</span>
-<span id="cb21-10"><a></a>  <span class="co"># shape = 17,</span></span>
-<span id="cb21-11"><a></a>  <span class="co"># size = 7</span></span>
-<span id="cb21-12"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb21-13"><a></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>scenario, <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_x"</span>,<span class="at">labeller =</span> ggplot2<span class="sc">::</span><span class="fu">label_wrap_gen</span>(<span class="at">width =</span> <span class="dv">18</span>)) <span class="sc">+</span></span>
-<span id="cb21-14"><a></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb21-15"><a></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">22.5</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb21-16"><a></a>  ggplot2<span class="sc">::</span><span class="fu">scale_y_discrete</span>(</span>
-<span id="cb21-17"><a></a>    <span class="at">labels =</span> str_to_title</span>
-<span id="cb21-18"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb21-19"><a></a>  <span class="fu">my_theme</span>() <span class="sc">+</span></span>
-<span id="cb21-20"><a></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
-<span id="cb21-21"><a></a>  <span class="at">x =</span> <span class="st">"Percent change"</span>,</span>
-<span id="cb21-22"><a></a>  <span class="at">y =</span> <span class="st">"Asset"</span></span>
-<span id="cb21-23"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb21-24"><a></a>  ggplot2<span class="sc">::</span><span class="fu">theme</span>(</span>
-<span id="cb21-25"><a></a>  <span class="at">axis.text.x =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb21-26"><a></a>  <span class="at">panel.spacing =</span> ggplot2<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">"lines"</span>),</span>
-<span id="cb21-27"><a></a>  <span class="at">panel.background =</span> ggplot2<span class="sc">::</span><span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#F2F2F2"</span>),</span>
-<span id="cb21-28"><a></a>  <span class="at">plot.subtitle =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb21-29"><a></a>  <span class="at">axis.text.y =</span> ggtext<span class="sc">::</span><span class="fu">element_markdown</span>(<span class="at">size =</span> <span class="dv">24</span>),</span>
-<span id="cb21-30"><a></a>  <span class="at">legend.position =</span> <span class="st">"none"</span></span>
-<span id="cb21-31"><a></a>  ) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-
-</div>
-<img data-src="slides_files/figure-revealjs/plot_all_wetlands-1.png" width="960" class="r-stretch"></section></section>
+</section></section>
 <section>
 <section id="environmental-water-analysis" class="title-slide slide level1 center">
 <h1>Environmental water analysis</h1>
@@ -1614,10 +1104,10 @@ $ wetland_name         &lt;chr&gt; "currawinya lakes", "currawinya lakes", "curr
 <h2>Overview</h2>
 <ul>
 <li>This is very similar to the climate analysis, but we use the model to predict abundance as if environmental flows had not existed previously</li>
-<li>Again, I’m going to skip the cleaning here - we can work through the website if we have time</li>
+<li>Again, I’m going to skip the cleaning here - we can work through the website as needed</li>
 </ul>
 </section>
-<section id="cleaned-data" class="slide level2">
+<section id="cleaned-data" class="slide level2 scrollable">
 <h2>Cleaned data</h2>
 <ul>
 <li>Ultimately we end up with an annual dataset that has two possible columns for total flow at the upstream gauge - one column has actual, and one has actual minus environmental flows.</li>
@@ -1626,100 +1116,100 @@ $ wetland_name         &lt;chr&gt; "currawinya lakes", "currawinya lakes", "curr
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a></a>wetlands_with_valleys <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetlands_with_valleys.csv"</span>) </span>
-<span id="cb22-2"><a></a>asset_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/asset_precip_data.csv"</span>)</span>
-<span id="cb22-3"><a></a>valley_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_precip_data.csv"</span>)</span>
-<span id="cb22-4"><a></a>precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/precip_data.csv"</span>)</span>
-<span id="cb22-5"><a></a></span>
-<span id="cb22-6"><a></a><span class="co"># SWC (flooding) data</span></span>
-<span id="cb22-7"><a></a>swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/australia_annual_water_area_presence.csv"</span>)</span>
-<span id="cb22-8"><a></a>wetlands_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetland_inundation_results.csv"</span>)</span>
-<span id="cb22-9"><a></a>basin_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/basin_inundation_results.csv"</span>) </span>
-<span id="cb22-10"><a></a>valleys_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_inundation_results.csv"</span>)</span>
-<span id="cb22-11"><a></a></span>
-<span id="cb22-12"><a></a><span class="co"># Flow data</span></span>
-<span id="cb22-13"><a></a>combined_flow_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_data.csv"</span>)</span>
-<span id="cb22-14"><a></a>combined_flow_metadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_metadata.csv"</span>)</span>
-<span id="cb22-15"><a></a>total_flow <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/total_flow.csv"</span>)</span>
-<span id="cb22-16"><a></a>ewater <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/eflows.csv"</span>)</span>
-<span id="cb22-17"><a></a>ewater_wy <span class="ot">&lt;-</span> ewater <span class="sc">|&gt;</span></span>
-<span id="cb22-18"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-19"><a></a>    <span class="at">month_num =</span> <span class="fu">match</span>(month, month.name),</span>
-<span id="cb22-20"><a></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(year, month_num, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">"-"</span>)),</span>
-<span id="cb22-21"><a></a>    <span class="co"># Nov-Oct water year: Nov+ belongs to following year's Oct label</span></span>
-<span id="cb22-22"><a></a>    <span class="at">water_year_nov =</span> <span class="fu">if_else</span>(month_num <span class="sc">&gt;=</span> <span class="dv">11</span>, year <span class="sc">+</span> <span class="dv">1</span>L, <span class="fu">as.integer</span>(year))</span>
-<span id="cb22-23"><a></a>  )</span>
-<span id="cb22-24"><a></a></span>
-<span id="cb22-25"><a></a><span class="co"># Annual summary</span></span>
-<span id="cb22-26"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_wy <span class="sc">|&gt;</span></span>
-<span id="cb22-27"><a></a>  <span class="fu">summarise</span>(</span>
-<span id="cb22-28"><a></a>    <span class="fu">across</span>(<span class="fu">c</span>(marebone_total, env_flow, EWA, FMZ, irrigation, baseflow, other), sum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-29"><a></a>    <span class="at">.by =</span> water_year_nov</span>
-<span id="cb22-30"><a></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb22-31"><a></a>  <span class="fu">arrange</span>(water_year_nov)</span>
-<span id="cb22-32"><a></a></span>
-<span id="cb22-33"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
-<span id="cb22-34"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-35"><a></a>    <span class="at">non_env_flow =</span> marebone_total <span class="sc">-</span> env_flow </span>
-<span id="cb22-36"><a></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb22-37"><a></a>    <span class="fu">select</span>(water_year_nov, non_env_flow, env_flow, marebone_total)</span>
-<span id="cb22-38"><a></a></span>
-<span id="cb22-39"><a></a><span class="co"># Now the 3m</span></span>
-<span id="cb22-40"><a></a>ewater_wy_3m <span class="ot">&lt;-</span> ewater <span class="sc">|&gt;</span></span>
-<span id="cb22-41"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-42"><a></a>    <span class="at">month_num =</span> <span class="fu">match</span>(month, month.name),</span>
-<span id="cb22-43"><a></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(year, month_num, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">"-"</span>)),</span>
-<span id="cb22-44"><a></a>    <span class="co"># Nov-Oct water year: Nov+ belongs to following year's Oct label</span></span>
-<span id="cb22-45"><a></a>    <span class="at">water_year_nov =</span> <span class="fu">if_else</span>(month_num <span class="sc">&gt;=</span> <span class="dv">11</span>, year <span class="sc">+</span> <span class="dv">1</span>L, <span class="fu">as.integer</span>(year))</span>
-<span id="cb22-46"><a></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-47"><a></a>    <span class="fu">filter</span>(month_num <span class="sc">&gt;=</span> <span class="dv">7</span>, month_num <span class="sc">&lt;</span> <span class="dv">10</span>) <span class="co"># preceding 3 months</span></span>
-<span id="cb22-48"><a></a></span>
-<span id="cb22-49"><a></a>ewater_annual_3m <span class="ot">&lt;-</span> ewater_wy_3m <span class="sc">|&gt;</span></span>
-<span id="cb22-50"><a></a>  <span class="fu">summarise</span>(</span>
-<span id="cb22-51"><a></a>    <span class="at">marebone_total_3m =</span> <span class="fu">sum</span>(marebone_total, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-52"><a></a>    <span class="at">env_flow_3m =</span> <span class="fu">sum</span>(env_flow, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-53"><a></a>    <span class="at">EWA_3m =</span> <span class="fu">sum</span>(EWA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-54"><a></a>    <span class="at">FMZ_3m =</span> <span class="fu">sum</span>(FMZ, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-55"><a></a>    <span class="at">irrigation_3m =</span> <span class="fu">sum</span>(irrigation, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-56"><a></a>    <span class="at">baseflow_3m =</span> <span class="fu">sum</span>(baseflow, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-57"><a></a>    <span class="at">other_3m =</span> <span class="fu">sum</span>(other, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb22-58"><a></a>    <span class="at">.by =</span> water_year_nov</span>
-<span id="cb22-59"><a></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb22-60"><a></a>  <span class="fu">arrange</span>(water_year_nov)</span>
-<span id="cb22-61"><a></a></span>
-<span id="cb22-62"><a></a>ewater_annual_3m <span class="ot">&lt;-</span> ewater_annual_3m <span class="sc">|&gt;</span></span>
-<span id="cb22-63"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-64"><a></a>    <span class="at">non_env_flow_3m =</span> marebone_total_3m <span class="sc">-</span> env_flow_3m</span>
-<span id="cb22-65"><a></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb22-66"><a></a>    <span class="fu">select</span>(water_year_nov, non_env_flow_3m, env_flow_3m, marebone_total_3m)</span>
-<span id="cb22-67"><a></a></span>
-<span id="cb22-68"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
-<span id="cb22-69"><a></a>  <span class="fu">left_join</span>(ewater_annual_3m, <span class="at">by =</span> <span class="st">"water_year_nov"</span>)</span>
-<span id="cb22-70"><a></a></span>
-<span id="cb22-71"><a></a>mac_scaling <span class="ot">&lt;-</span> combined_flow_metadata <span class="sc">|&gt;</span></span>
-<span id="cb22-72"><a></a>    <span class="fu">filter</span>(wetlands <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb22-73"><a></a>    <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb22-74"><a></a>    <span class="fu">select</span>(</span>
-<span id="cb22-75"><a></a>      wetland_mean_flow_3m,</span>
-<span id="cb22-76"><a></a>      wetland_sd_flow_3m,</span>
-<span id="cb22-77"><a></a>      wetland_mean_flow_annual,</span>
-<span id="cb22-78"><a></a>      wetland_sd_flow_annual</span>
-<span id="cb22-79"><a></a>    )</span>
-<span id="cb22-80"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
-<span id="cb22-81"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-82"><a></a>    <span class="at">wetland_flow_annual_scaled_total   =</span> (marebone_total <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_annual) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_annual,</span>
-<span id="cb22-83"><a></a>    <span class="at">wetland_flow_annual_scaled_non_env =</span> ((non_env_flow) <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_annual) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_annual,</span>
-<span id="cb22-84"><a></a>    <span class="at">wetland_flow_annual_scaled_total_lagged =</span> <span class="fu">lag</span>(wetland_flow_annual_scaled_total),</span>
-<span id="cb22-85"><a></a>    <span class="at">wetland_flow_annual_scaled_non_env_lagged =</span> <span class="fu">lag</span>(wetland_flow_annual_scaled_non_env),</span>
-<span id="cb22-86"><a></a>    <span class="at">wetland_flow_3m_scaled_total   =</span> (marebone_total_3m <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_3m) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_3m,</span>
-<span id="cb22-87"><a></a>    <span class="at">wetland_flow_3m_scaled_non_env =</span> ((non_env_flow_3m ) <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_3m) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_3m,</span>
-<span id="cb22-88"><a></a>    <span class="at">wetland_flow_3m_scaled_total_lagged =</span> <span class="fu">lag</span>(wetland_flow_3m_scaled_total),</span>
-<span id="cb22-89"><a></a>    <span class="at">wetland_flow_3m_scaled_non_env_lagged =</span> <span class="fu">lag</span>(wetland_flow_3m_scaled_non_env)</span>
-<span id="cb22-90"><a></a>    </span>
-<span id="cb22-91"><a></a>  )</span>
-<span id="cb22-92"><a></a></span>
-<span id="cb22-93"><a></a></span>
-<span id="cb22-94"><a></a><span class="fu">glimpse</span>(ewater_annual)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>wetlands_with_valleys <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetlands_with_valleys.csv"</span>) </span>
+<span id="cb21-2"><a></a>asset_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/asset_precip_data.csv"</span>)</span>
+<span id="cb21-3"><a></a>valley_precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_precip_data.csv"</span>)</span>
+<span id="cb21-4"><a></a>precip <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/precip_data.csv"</span>)</span>
+<span id="cb21-5"><a></a></span>
+<span id="cb21-6"><a></a><span class="co"># SWC (flooding) data</span></span>
+<span id="cb21-7"><a></a>swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/australia_annual_water_area_presence.csv"</span>)</span>
+<span id="cb21-8"><a></a>wetlands_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/wetland_inundation_results.csv"</span>)</span>
+<span id="cb21-9"><a></a>basin_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/basin_inundation_results.csv"</span>) </span>
+<span id="cb21-10"><a></a>valleys_swc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/valley_inundation_results.csv"</span>)</span>
+<span id="cb21-11"><a></a></span>
+<span id="cb21-12"><a></a><span class="co"># Flow data</span></span>
+<span id="cb21-13"><a></a>combined_flow_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_data.csv"</span>)</span>
+<span id="cb21-14"><a></a>combined_flow_metadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/combined_flow_metadata.csv"</span>)</span>
+<span id="cb21-15"><a></a>total_flow <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/total_flow.csv"</span>)</span>
+<span id="cb21-16"><a></a>ewater <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/eflows.csv"</span>)</span>
+<span id="cb21-17"><a></a>ewater_wy <span class="ot">&lt;-</span> ewater <span class="sc">|&gt;</span></span>
+<span id="cb21-18"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-19"><a></a>    <span class="at">month_num =</span> <span class="fu">match</span>(month, month.name),</span>
+<span id="cb21-20"><a></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(year, month_num, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">"-"</span>)),</span>
+<span id="cb21-21"><a></a>    <span class="co"># Nov-Oct water year: Nov+ belongs to following year's Oct label</span></span>
+<span id="cb21-22"><a></a>    <span class="at">water_year_nov =</span> <span class="fu">if_else</span>(month_num <span class="sc">&gt;=</span> <span class="dv">11</span>, year <span class="sc">+</span> <span class="dv">1</span>L, <span class="fu">as.integer</span>(year))</span>
+<span id="cb21-23"><a></a>  )</span>
+<span id="cb21-24"><a></a></span>
+<span id="cb21-25"><a></a><span class="co"># Annual summary</span></span>
+<span id="cb21-26"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_wy <span class="sc">|&gt;</span></span>
+<span id="cb21-27"><a></a>  <span class="fu">summarise</span>(</span>
+<span id="cb21-28"><a></a>    <span class="fu">across</span>(<span class="fu">c</span>(marebone_total, env_flow, EWA, FMZ, irrigation, baseflow, other), sum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-29"><a></a>    <span class="at">.by =</span> water_year_nov</span>
+<span id="cb21-30"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-31"><a></a>  <span class="fu">arrange</span>(water_year_nov)</span>
+<span id="cb21-32"><a></a></span>
+<span id="cb21-33"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
+<span id="cb21-34"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-35"><a></a>    <span class="at">non_env_flow =</span> marebone_total <span class="sc">-</span> env_flow </span>
+<span id="cb21-36"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb21-37"><a></a>    <span class="fu">select</span>(water_year_nov, non_env_flow, env_flow, marebone_total)</span>
+<span id="cb21-38"><a></a></span>
+<span id="cb21-39"><a></a><span class="co"># Now the 3m</span></span>
+<span id="cb21-40"><a></a>ewater_wy_3m <span class="ot">&lt;-</span> ewater <span class="sc">|&gt;</span></span>
+<span id="cb21-41"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-42"><a></a>    <span class="at">month_num =</span> <span class="fu">match</span>(month, month.name),</span>
+<span id="cb21-43"><a></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(year, month_num, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">"-"</span>)),</span>
+<span id="cb21-44"><a></a>    <span class="co"># Nov-Oct water year: Nov+ belongs to following year's Oct label</span></span>
+<span id="cb21-45"><a></a>    <span class="at">water_year_nov =</span> <span class="fu">if_else</span>(month_num <span class="sc">&gt;=</span> <span class="dv">11</span>, year <span class="sc">+</span> <span class="dv">1</span>L, <span class="fu">as.integer</span>(year))</span>
+<span id="cb21-46"><a></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-47"><a></a>    <span class="fu">filter</span>(month_num <span class="sc">&gt;=</span> <span class="dv">7</span>, month_num <span class="sc">&lt;</span> <span class="dv">10</span>) <span class="co"># preceding 3 months</span></span>
+<span id="cb21-48"><a></a></span>
+<span id="cb21-49"><a></a>ewater_annual_3m <span class="ot">&lt;-</span> ewater_wy_3m <span class="sc">|&gt;</span></span>
+<span id="cb21-50"><a></a>  <span class="fu">summarise</span>(</span>
+<span id="cb21-51"><a></a>    <span class="at">marebone_total_3m =</span> <span class="fu">sum</span>(marebone_total, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-52"><a></a>    <span class="at">env_flow_3m =</span> <span class="fu">sum</span>(env_flow, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-53"><a></a>    <span class="at">EWA_3m =</span> <span class="fu">sum</span>(EWA, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-54"><a></a>    <span class="at">FMZ_3m =</span> <span class="fu">sum</span>(FMZ, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-55"><a></a>    <span class="at">irrigation_3m =</span> <span class="fu">sum</span>(irrigation, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-56"><a></a>    <span class="at">baseflow_3m =</span> <span class="fu">sum</span>(baseflow, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-57"><a></a>    <span class="at">other_3m =</span> <span class="fu">sum</span>(other, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb21-58"><a></a>    <span class="at">.by =</span> water_year_nov</span>
+<span id="cb21-59"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-60"><a></a>  <span class="fu">arrange</span>(water_year_nov)</span>
+<span id="cb21-61"><a></a></span>
+<span id="cb21-62"><a></a>ewater_annual_3m <span class="ot">&lt;-</span> ewater_annual_3m <span class="sc">|&gt;</span></span>
+<span id="cb21-63"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-64"><a></a>    <span class="at">non_env_flow_3m =</span> marebone_total_3m <span class="sc">-</span> env_flow_3m</span>
+<span id="cb21-65"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb21-66"><a></a>    <span class="fu">select</span>(water_year_nov, non_env_flow_3m, env_flow_3m, marebone_total_3m)</span>
+<span id="cb21-67"><a></a></span>
+<span id="cb21-68"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
+<span id="cb21-69"><a></a>  <span class="fu">left_join</span>(ewater_annual_3m, <span class="at">by =</span> <span class="st">"water_year_nov"</span>)</span>
+<span id="cb21-70"><a></a></span>
+<span id="cb21-71"><a></a>mac_scaling <span class="ot">&lt;-</span> combined_flow_metadata <span class="sc">|&gt;</span></span>
+<span id="cb21-72"><a></a>    <span class="fu">filter</span>(wetlands <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-73"><a></a>    <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-74"><a></a>    <span class="fu">select</span>(</span>
+<span id="cb21-75"><a></a>      wetland_mean_flow_3m,</span>
+<span id="cb21-76"><a></a>      wetland_sd_flow_3m,</span>
+<span id="cb21-77"><a></a>      wetland_mean_flow_annual,</span>
+<span id="cb21-78"><a></a>      wetland_sd_flow_annual</span>
+<span id="cb21-79"><a></a>    )</span>
+<span id="cb21-80"><a></a>ewater_annual <span class="ot">&lt;-</span> ewater_annual <span class="sc">|&gt;</span></span>
+<span id="cb21-81"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-82"><a></a>    <span class="at">wetland_flow_annual_scaled_total   =</span> (marebone_total <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_annual) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_annual,</span>
+<span id="cb21-83"><a></a>    <span class="at">wetland_flow_annual_scaled_non_env =</span> ((non_env_flow) <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_annual) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_annual,</span>
+<span id="cb21-84"><a></a>    <span class="at">wetland_flow_annual_scaled_total_lagged =</span> <span class="fu">lag</span>(wetland_flow_annual_scaled_total),</span>
+<span id="cb21-85"><a></a>    <span class="at">wetland_flow_annual_scaled_non_env_lagged =</span> <span class="fu">lag</span>(wetland_flow_annual_scaled_non_env),</span>
+<span id="cb21-86"><a></a>    <span class="at">wetland_flow_3m_scaled_total   =</span> (marebone_total_3m <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_3m) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_3m,</span>
+<span id="cb21-87"><a></a>    <span class="at">wetland_flow_3m_scaled_non_env =</span> ((non_env_flow_3m ) <span class="sc">-</span> mac_scaling<span class="sc">$</span>wetland_mean_flow_3m) <span class="sc">/</span> mac_scaling<span class="sc">$</span>wetland_sd_flow_3m,</span>
+<span id="cb21-88"><a></a>    <span class="at">wetland_flow_3m_scaled_total_lagged =</span> <span class="fu">lag</span>(wetland_flow_3m_scaled_total),</span>
+<span id="cb21-89"><a></a>    <span class="at">wetland_flow_3m_scaled_non_env_lagged =</span> <span class="fu">lag</span>(wetland_flow_3m_scaled_non_env)</span>
+<span id="cb21-90"><a></a>    </span>
+<span id="cb21-91"><a></a>  )</span>
+<span id="cb21-92"><a></a></span>
+<span id="cb21-93"><a></a></span>
+<span id="cb21-94"><a></a><span class="fu">glimpse</span>(ewater_annual)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 29
@@ -1740,65 +1230,56 @@ $ wetland_flow_3m_scaled_non_env            &lt;dbl&gt; -0.6520435, -0.9688809, 
 $ wetland_flow_3m_scaled_total_lagged       &lt;dbl&gt; NA, 0.2887642, -0.9688809, 2…
 $ wetland_flow_3m_scaled_non_env_lagged     &lt;dbl&gt; NA, -0.6520435, -0.9688809, …</code></pre>
 </div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a><span class="fu">ggplot</span>(ewater_annual, <span class="fu">aes</span>(<span class="at">x =</span> water_year_nov)) <span class="sc">+</span></span>
-<span id="cb24-2"><a></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> wetland_flow_annual_scaled_total, <span class="at">color =</span> <span class="st">"Total flow"</span>)) <span class="sc">+</span></span>
-<span id="cb24-3"><a></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> wetland_flow_annual_scaled_non_env, <span class="at">color =</span> <span class="st">"Non-environmental flow"</span>)) <span class="sc">+</span></span>
-<span id="cb24-4"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb24-5"><a></a>    <span class="at">x =</span> <span class="st">"Water year (Nov-Oct)"</span>,</span>
-<span id="cb24-6"><a></a>    <span class="at">y =</span> <span class="st">"Scaled flow"</span>,</span>
-<span id="cb24-7"><a></a>    <span class="at">color =</span> <span class="st">"Flow type"</span></span>
-<span id="cb24-8"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb24-9"><a></a>  <span class="fu">my_theme</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-
 </div>
-<img data-src="slides_files/figure-revealjs/cleaning, libraries, etc-1.png" width="960" class="r-stretch"></section>
+</section>
+<section id="cleaned-data-1" class="slide level2 scrollable">
+<h2>Cleaned data</h2>
+
+<img data-src="slides_files/figure-revealjs/plot flows-1.png" width="960" class="r-stretch"></section>
 <section id="other-variables" class="slide level2">
 <h2>Other variables</h2>
 <p>We load in other variables that we need</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>full_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">surv_year =</span> <span class="fu">seq</span>(<span class="dv">2010</span>, <span class="dv">2024</span>), <span class="at">Wetland =</span> <span class="st">"macquarie marshes"</span>)  <span class="sc">%&gt;%</span></span>
-<span id="cb25-2"><a></a>  <span class="fu">left_join</span>(</span>
-<span id="cb25-3"><a></a>    asset_precip <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Wetland =</span> <span class="fu">str_to_lower</span>(Wetland)),</span>
-<span id="cb25-4"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, Wetland <span class="sc">==</span> Wetland)</span>
-<span id="cb25-5"><a></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb25-6"><a></a>  <span class="fu">left_join</span>(wetlands_with_valleys) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-7"><a></a>  <span class="fu">mutate</span>(<span class="at">ValleyName =</span> <span class="fu">str_to_lower</span>(ValleyName)) <span class="sc">%&gt;%</span></span>
-<span id="cb25-8"><a></a>  <span class="fu">left_join</span>(</span>
-<span id="cb25-9"><a></a>    valley_precip,</span>
-<span id="cb25-10"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, ValleyName <span class="sc">==</span> valleyname)</span>
-<span id="cb25-11"><a></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb25-12"><a></a>  <span class="fu">left_join</span>(precip, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb25-13"><a></a>  <span class="fu">left_join</span>(</span>
-<span id="cb25-14"><a></a>    combined_flow_data,</span>
-<span id="cb25-15"><a></a>    <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>, Wetland <span class="sc">==</span> wetlands)</span>
-<span id="cb25-16"><a></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb25-17"><a></a>  <span class="fu">filter</span>(</span>
-<span id="cb25-18"><a></a>    <span class="sc">!</span><span class="fu">is.na</span>(wetland_flow_annual_scaled)</span>
-<span id="cb25-19"><a></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb25-20"><a></a>  <span class="fu">left_join</span>(total_flow, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb25-21"><a></a>  <span class="fu">left_join</span>(swc, <span class="fu">join_by</span>(<span class="st">'surv_year'</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb25-22"><a></a>  <span class="fu">select</span>(</span>
-<span id="cb25-23"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
-<span id="cb25-24"><a></a>      subwetland,</span>
-<span id="cb25-25"><a></a>      asset_precip_3m,</span>
-<span id="cb25-26"><a></a>      asset_precip,</span>
-<span id="cb25-27"><a></a>      X,</span>
-<span id="cb25-28"><a></a>      valley_precip_3m,</span>
-<span id="cb25-29"><a></a>      valley_precip,</span>
-<span id="cb25-30"><a></a>      basin_precip_3m,</span>
-<span id="cb25-31"><a></a>      basin_precip,</span>
-<span id="cb25-32"><a></a>      flow_3m,</span>
-<span id="cb25-33"><a></a>      flow,</span>
-<span id="cb25-34"><a></a>      water_area_m2</span>
-<span id="cb25-35"><a></a>    )</span>
-<span id="cb25-36"><a></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb25-37"><a></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>())</span>
-<span id="cb25-38"><a></a><span class="fu">glimpse</span>(full_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>full_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">surv_year =</span> <span class="fu">seq</span>(<span class="dv">2010</span>, <span class="dv">2024</span>), <span class="at">Wetland =</span> <span class="st">"macquarie marshes"</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb23-3"><a></a>    asset_precip <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Wetland =</span> <span class="fu">str_to_lower</span>(Wetland)),</span>
+<span id="cb23-4"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, Wetland <span class="sc">==</span> Wetland)</span>
+<span id="cb23-5"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-6"><a></a>  <span class="fu">left_join</span>(wetlands_with_valleys) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-7"><a></a>  <span class="fu">mutate</span>(<span class="at">ValleyName =</span> <span class="fu">str_to_lower</span>(ValleyName)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-8"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb23-9"><a></a>    valley_precip,</span>
+<span id="cb23-10"><a></a>    <span class="fu">join_by</span>(surv_year <span class="sc">==</span> year, ValleyName <span class="sc">==</span> valleyname)</span>
+<span id="cb23-11"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-12"><a></a>  <span class="fu">left_join</span>(precip, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-13"><a></a>  <span class="fu">left_join</span>(</span>
+<span id="cb23-14"><a></a>    combined_flow_data,</span>
+<span id="cb23-15"><a></a>    <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>, Wetland <span class="sc">==</span> wetlands)</span>
+<span id="cb23-16"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-17"><a></a>  <span class="fu">filter</span>(</span>
+<span id="cb23-18"><a></a>    <span class="sc">!</span><span class="fu">is.na</span>(wetland_flow_annual_scaled)</span>
+<span id="cb23-19"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-20"><a></a>  <span class="fu">left_join</span>(total_flow, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-21"><a></a>  <span class="fu">left_join</span>(swc, <span class="fu">join_by</span>(<span class="st">'surv_year'</span> <span class="sc">==</span> <span class="st">"year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-22"><a></a>  <span class="fu">select</span>(</span>
+<span id="cb23-23"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb23-24"><a></a>      subwetland,</span>
+<span id="cb23-25"><a></a>      asset_precip_3m,</span>
+<span id="cb23-26"><a></a>      asset_precip,</span>
+<span id="cb23-27"><a></a>      X,</span>
+<span id="cb23-28"><a></a>      valley_precip_3m,</span>
+<span id="cb23-29"><a></a>      valley_precip,</span>
+<span id="cb23-30"><a></a>      basin_precip_3m,</span>
+<span id="cb23-31"><a></a>      basin_precip,</span>
+<span id="cb23-32"><a></a>      flow_3m,</span>
+<span id="cb23-33"><a></a>      flow,</span>
+<span id="cb23-34"><a></a>      water_area_m2</span>
+<span id="cb23-35"><a></a>    )</span>
+<span id="cb23-36"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-37"><a></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>())</span>
+<span id="cb23-38"><a></a><span class="fu">glimpse</span>(full_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 15
@@ -1838,121 +1319,128 @@ $ id                                    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a>new_data_with_env <span class="ot">&lt;-</span> full_data <span class="sc">%&gt;%</span> </span>
-<span id="cb27-2"><a></a>  <span class="fu">filter</span>(Wetland <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-3"><a></a>  <span class="fu">select</span>(</span>
-<span id="cb27-4"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
-<span id="cb27-5"><a></a>      wetland_flow_3m_scaled,</span>
-<span id="cb27-6"><a></a>      wetland_flow_annual_scaled,</span>
-<span id="cb27-7"><a></a>      wetland_flow_annual_scaled_lagged</span>
-<span id="cb27-8"><a></a>    )</span>
-<span id="cb27-9"><a></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb27-10"><a></a>  <span class="fu">left_join</span>(ewater_annual, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year_nov"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-11"><a></a>  <span class="fu">rename</span>(</span>
-<span id="cb27-12"><a></a>    <span class="at">wetland_flow_3m_scaled =</span> wetland_flow_3m_scaled_total,</span>
-<span id="cb27-13"><a></a>    <span class="at">wetland_flow_annual_scaled =</span> wetland_flow_annual_scaled_total,</span>
-<span id="cb27-14"><a></a>    <span class="at">wetland_flow_annual_scaled_lagged =</span> wetland_flow_annual_scaled_total_lagged</span>
-<span id="cb27-15"><a></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-16"><a></a>    <span class="fu">select</span>(</span>
-<span id="cb27-17"><a></a>        <span class="sc">-</span><span class="fu">c</span>(</span>
-<span id="cb27-18"><a></a>          marebone_total,</span>
-<span id="cb27-19"><a></a>          env_flow,</span>
-<span id="cb27-20"><a></a>          non_env_flow,</span>
-<span id="cb27-21"><a></a>          marebone_total_3m,</span>
-<span id="cb27-22"><a></a>          env_flow_3m,</span>
-<span id="cb27-23"><a></a>          </span>
-<span id="cb27-24"><a></a>          wetland_flow_3m_scaled_non_env,</span>
-<span id="cb27-25"><a></a>          wetland_flow_3m_scaled_non_env_lagged,</span>
-<span id="cb27-26"><a></a>          wetland_flow_annual_scaled_non_env,</span>
-<span id="cb27-27"><a></a>          wetland_flow_annual_scaled_non_env_lagged</span>
-<span id="cb27-28"><a></a>        )</span>
-<span id="cb27-29"><a></a>    )<span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x, <span class="dv">0</span>)))<span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
-<span id="cb27-30"><a></a></span>
-<span id="cb27-31"><a></a></span>
-<span id="cb27-32"><a></a>new_data_no_env <span class="ot">&lt;-</span> full_data <span class="sc">|&gt;</span> </span>
-<span id="cb27-33"><a></a> </span>
-<span id="cb27-34"><a></a>  <span class="fu">filter</span>(Wetland <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-35"><a></a>  <span class="fu">select</span>(</span>
-<span id="cb27-36"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
-<span id="cb27-37"><a></a>      wetland_flow_3m_scaled,</span>
-<span id="cb27-38"><a></a>      wetland_flow_annual_scaled,</span>
-<span id="cb27-39"><a></a>      wetland_flow_annual_scaled_lagged</span>
-<span id="cb27-40"><a></a>    )</span>
-<span id="cb27-41"><a></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb27-42"><a></a>  <span class="fu">left_join</span>(ewater_annual, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year_nov"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-43"><a></a>  <span class="fu">rename</span>(</span>
-<span id="cb27-44"><a></a>    <span class="at">wetland_flow_3m_scaled =</span> wetland_flow_3m_scaled_non_env,</span>
-<span id="cb27-45"><a></a>    <span class="at">wetland_flow_annual_scaled =</span> wetland_flow_annual_scaled_non_env,</span>
-<span id="cb27-46"><a></a>    <span class="at">wetland_flow_annual_scaled_lagged =</span> wetland_flow_annual_scaled_non_env_lagged</span>
-<span id="cb27-47"><a></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-48"><a></a>    <span class="fu">select</span>(</span>
-<span id="cb27-49"><a></a>        <span class="sc">-</span><span class="fu">c</span>(</span>
-<span id="cb27-50"><a></a>          marebone_total,</span>
-<span id="cb27-51"><a></a>          env_flow,</span>
-<span id="cb27-52"><a></a>          </span>
-<span id="cb27-53"><a></a>          non_env_flow,</span>
-<span id="cb27-54"><a></a>          marebone_total_3m,</span>
-<span id="cb27-55"><a></a>          env_flow_3m,</span>
-<span id="cb27-56"><a></a>          </span>
-<span id="cb27-57"><a></a>          non_env_flow_3m,</span>
-<span id="cb27-58"><a></a>          </span>
-<span id="cb27-59"><a></a>          wetland_flow_3m_scaled_total,</span>
-<span id="cb27-60"><a></a>          wetland_flow_3m_scaled_total_lagged,</span>
-<span id="cb27-61"><a></a>          </span>
-<span id="cb27-62"><a></a>          wetland_flow_annual_scaled_total,</span>
-<span id="cb27-63"><a></a>          wetland_flow_annual_scaled_total_lagged</span>
-<span id="cb27-64"><a></a></span>
-<span id="cb27-65"><a></a>        )</span>
-<span id="cb27-66"><a></a>    ) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x, <span class="dv">0</span>)))<span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>new_data_with_env <span class="ot">&lt;-</span> full_data <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a></a>  <span class="fu">filter</span>(Wetland <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a></a>  <span class="fu">select</span>(</span>
+<span id="cb25-4"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-5"><a></a>      wetland_flow_3m_scaled,</span>
+<span id="cb25-6"><a></a>      wetland_flow_annual_scaled,</span>
+<span id="cb25-7"><a></a>      wetland_flow_annual_scaled_lagged</span>
+<span id="cb25-8"><a></a>    )</span>
+<span id="cb25-9"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-10"><a></a>  <span class="fu">left_join</span>(ewater_annual, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year_nov"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-11"><a></a>  <span class="fu">rename</span>(</span>
+<span id="cb25-12"><a></a>    <span class="at">wetland_flow_3m_scaled =</span> wetland_flow_3m_scaled_total,</span>
+<span id="cb25-13"><a></a>    <span class="at">wetland_flow_annual_scaled =</span> wetland_flow_annual_scaled_total,</span>
+<span id="cb25-14"><a></a>    <span class="at">wetland_flow_annual_scaled_lagged =</span> wetland_flow_annual_scaled_total_lagged</span>
+<span id="cb25-15"><a></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-16"><a></a>    <span class="fu">select</span>(</span>
+<span id="cb25-17"><a></a>        <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-18"><a></a>          marebone_total,</span>
+<span id="cb25-19"><a></a>          env_flow,</span>
+<span id="cb25-20"><a></a>          non_env_flow,</span>
+<span id="cb25-21"><a></a>          marebone_total_3m,</span>
+<span id="cb25-22"><a></a>          env_flow_3m,</span>
+<span id="cb25-23"><a></a>          </span>
+<span id="cb25-24"><a></a>          wetland_flow_3m_scaled_non_env,</span>
+<span id="cb25-25"><a></a>          wetland_flow_3m_scaled_non_env_lagged,</span>
+<span id="cb25-26"><a></a>          wetland_flow_annual_scaled_non_env,</span>
+<span id="cb25-27"><a></a>          wetland_flow_annual_scaled_non_env_lagged</span>
+<span id="cb25-28"><a></a>        )</span>
+<span id="cb25-29"><a></a>    )<span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x, <span class="dv">0</span>)))<span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span>
+<span id="cb25-30"><a></a></span>
+<span id="cb25-31"><a></a></span>
+<span id="cb25-32"><a></a>new_data_no_env <span class="ot">&lt;-</span> full_data <span class="sc">|&gt;</span> </span>
+<span id="cb25-33"><a></a> </span>
+<span id="cb25-34"><a></a>  <span class="fu">filter</span>(Wetland <span class="sc">==</span> <span class="st">"macquarie marshes"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-35"><a></a>  <span class="fu">select</span>(</span>
+<span id="cb25-36"><a></a>    <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-37"><a></a>      wetland_flow_3m_scaled,</span>
+<span id="cb25-38"><a></a>      wetland_flow_annual_scaled,</span>
+<span id="cb25-39"><a></a>      wetland_flow_annual_scaled_lagged</span>
+<span id="cb25-40"><a></a>    )</span>
+<span id="cb25-41"><a></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-42"><a></a>  <span class="fu">left_join</span>(ewater_annual, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"surv_year"</span> <span class="sc">==</span> <span class="st">"water_year_nov"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-43"><a></a>  <span class="fu">rename</span>(</span>
+<span id="cb25-44"><a></a>    <span class="at">wetland_flow_3m_scaled =</span> wetland_flow_3m_scaled_non_env,</span>
+<span id="cb25-45"><a></a>    <span class="at">wetland_flow_annual_scaled =</span> wetland_flow_annual_scaled_non_env,</span>
+<span id="cb25-46"><a></a>    <span class="at">wetland_flow_annual_scaled_lagged =</span> wetland_flow_annual_scaled_non_env_lagged</span>
+<span id="cb25-47"><a></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-48"><a></a>    <span class="fu">select</span>(</span>
+<span id="cb25-49"><a></a>        <span class="sc">-</span><span class="fu">c</span>(</span>
+<span id="cb25-50"><a></a>          marebone_total,</span>
+<span id="cb25-51"><a></a>          env_flow,</span>
+<span id="cb25-52"><a></a>          </span>
+<span id="cb25-53"><a></a>          non_env_flow,</span>
+<span id="cb25-54"><a></a>          marebone_total_3m,</span>
+<span id="cb25-55"><a></a>          env_flow_3m,</span>
+<span id="cb25-56"><a></a>          </span>
+<span id="cb25-57"><a></a>          non_env_flow_3m,</span>
+<span id="cb25-58"><a></a>          </span>
+<span id="cb25-59"><a></a>          wetland_flow_3m_scaled_total,</span>
+<span id="cb25-60"><a></a>          wetland_flow_3m_scaled_total_lagged,</span>
+<span id="cb25-61"><a></a>          </span>
+<span id="cb25-62"><a></a>          wetland_flow_annual_scaled_total,</span>
+<span id="cb25-63"><a></a>          wetland_flow_annual_scaled_total_lagged</span>
+<span id="cb25-64"><a></a></span>
+<span id="cb25-65"><a></a>        )</span>
+<span id="cb25-66"><a></a>    ) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x, <span class="dv">0</span>)))<span class="sc">|&gt;</span> <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="get-some-predictions-and-make-plots" class="slide level2">
 <h2>Get some predictions and make plots</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="co">#| message: false</span></span>
-<span id="cb28-2"><a></a><span class="co">#| warning: false</span></span>
-<span id="cb28-3"><a></a><span class="co">#| label: "models"</span></span>
-<span id="cb28-4"><a></a><span class="co">#| code-fold: true</span></span>
-<span id="cb28-5"><a></a>overall_abund <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/m1.1.rds"</span>)</span>
-<span id="cb28-6"><a></a></span>
-<span id="cb28-7"><a></a>predicted_with_env <span class="ot">&lt;-</span> overall_abund <span class="sc">%&gt;%</span></span>
-<span id="cb28-8"><a></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_with_env, <span class="at">re_formula =</span> <span class="cn">NULL</span>)</span>
-<span id="cb28-9"><a></a>predicted_no_env <span class="ot">&lt;-</span> overall_abund <span class="sc">%&gt;%</span></span>
-<span id="cb28-10"><a></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_no_env, <span class="at">re_formula =</span> <span class="cn">NULL</span>)</span>
-<span id="cb28-11"><a></a></span>
-<span id="cb28-12"><a></a>output_df <span class="ot">&lt;-</span> predicted_with_env <span class="sc">|&gt;</span></span>
-<span id="cb28-13"><a></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb28-14"><a></a>  <span class="fu">filter</span>(surv_year <span class="sc">!=</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span></span>
-<span id="cb28-15"><a></a>  <span class="fu">select</span>(surv_year, .draw, .epred) <span class="sc">|&gt;</span></span>
-<span id="cb28-16"><a></a>  <span class="fu">inner_join</span>(</span>
-<span id="cb28-17"><a></a>    predicted_no_env <span class="sc">|&gt;</span></span>
-<span id="cb28-18"><a></a>      <span class="fu">filter</span>(surv_year <span class="sc">!=</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span></span>
-<span id="cb28-19"><a></a>      <span class="fu">select</span>(surv_year, .draw, <span class="at">.epred_no_env =</span> .epred),</span>
-<span id="cb28-20"><a></a>    <span class="at">by =</span> <span class="fu">join_by</span>(surv_year, .draw)</span>
-<span id="cb28-21"><a></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb28-22"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb28-23"><a></a>    <span class="at">diff =</span> .epred <span class="sc">-</span> .epred_no_env,</span>
-<span id="cb28-24"><a></a>    <span class="at">pct_diff =</span> (.epred <span class="sc">-</span> .epred_no_env) <span class="sc">/</span> .epred <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb28-25"><a></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb28-26"><a></a>  <span class="fu">group_by</span>(surv_year) <span class="sc">|&gt;</span></span>
-<span id="cb28-27"><a></a>  <span class="fu">median_hdci</span>(diff, pct_diff, <span class="at">.width =</span> <span class="fl">0.95</span>)</span>
-<span id="cb28-28"><a></a></span>
-<span id="cb28-29"><a></a>overall_abund_pct <span class="ot">&lt;-</span> output_df <span class="sc">|&gt;</span> </span>
-<span id="cb28-30"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> surv_year, <span class="at">y =</span> pct_diff )) <span class="sc">+</span></span>
-<span id="cb28-31"><a></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> pct_diff.lower, <span class="at">ymax =</span> pct_diff.upper), <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb28-32"><a></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb28-33"><a></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb28-34"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb28-35"><a></a>    <span class="at">x =</span> <span class="st">"Survey Year"</span>,</span>
-<span id="cb28-36"><a></a>    <span class="at">y =</span> <span class="st">"Percentage Difference"</span></span>
-<span id="cb28-37"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb28-38"><a></a>  <span class="fu">my_theme</span>() <span class="sc">+</span></span>
-<span id="cb28-39"><a></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="co">#| message: false</span></span>
+<span id="cb26-2"><a></a><span class="co">#| warning: false</span></span>
+<span id="cb26-3"><a></a><span class="co">#| label: "models"</span></span>
+<span id="cb26-4"><a></a><span class="co">#| code-fold: true</span></span>
+<span id="cb26-5"><a></a>overall_abund <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/m1.1.rds"</span>)</span>
+<span id="cb26-6"><a></a></span>
+<span id="cb26-7"><a></a>predicted_with_env <span class="ot">&lt;-</span> overall_abund <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_with_env, <span class="at">re_formula =</span> <span class="cn">NULL</span>)</span>
+<span id="cb26-9"><a></a>predicted_no_env <span class="ot">&lt;-</span> overall_abund <span class="sc">%&gt;%</span></span>
+<span id="cb26-10"><a></a>  <span class="fu">epred_draws</span>(<span class="at">newdata =</span> new_data_no_env, <span class="at">re_formula =</span> <span class="cn">NULL</span>)</span>
+<span id="cb26-11"><a></a></span>
+<span id="cb26-12"><a></a>output_df <span class="ot">&lt;-</span> predicted_with_env <span class="sc">|&gt;</span></span>
+<span id="cb26-13"><a></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb26-14"><a></a>  <span class="fu">filter</span>(surv_year <span class="sc">!=</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-15"><a></a>  <span class="fu">select</span>(surv_year, .draw, .epred) <span class="sc">|&gt;</span></span>
+<span id="cb26-16"><a></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb26-17"><a></a>    predicted_no_env <span class="sc">|&gt;</span></span>
+<span id="cb26-18"><a></a>      <span class="fu">filter</span>(surv_year <span class="sc">!=</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-19"><a></a>      <span class="fu">select</span>(surv_year, .draw, <span class="at">.epred_no_env =</span> .epred),</span>
+<span id="cb26-20"><a></a>    <span class="at">by =</span> <span class="fu">join_by</span>(surv_year, .draw)</span>
+<span id="cb26-21"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb26-22"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-23"><a></a>    <span class="at">diff =</span> .epred <span class="sc">-</span> .epred_no_env,</span>
+<span id="cb26-24"><a></a>    <span class="at">pct_diff =</span> (.epred <span class="sc">-</span> .epred_no_env) <span class="sc">/</span> .epred <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb26-25"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb26-26"><a></a>  <span class="fu">group_by</span>(surv_year) <span class="sc">|&gt;</span></span>
+<span id="cb26-27"><a></a>  <span class="fu">median_hdci</span>(diff, pct_diff, <span class="at">.width =</span> <span class="fl">0.95</span>)</span>
+<span id="cb26-28"><a></a></span>
+<span id="cb26-29"><a></a>overall_abund_pct <span class="ot">&lt;-</span> output_df <span class="sc">|&gt;</span> </span>
+<span id="cb26-30"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> surv_year, <span class="at">y =</span> pct_diff )) <span class="sc">+</span></span>
+<span id="cb26-31"><a></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> pct_diff.lower, <span class="at">ymax =</span> pct_diff.upper), <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb26-32"><a></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb26-33"><a></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb26-34"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb26-35"><a></a>    <span class="at">x =</span> <span class="st">"Survey Year"</span>,</span>
+<span id="cb26-36"><a></a>    <span class="at">y =</span> <span class="st">"Percentage Difference"</span></span>
+<span id="cb26-37"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb26-38"><a></a>  <span class="fu">my_theme</span>() <span class="sc">+</span></span>
+<span id="cb26-39"><a></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="get-some-predictions-and-make-plots-1" class="slide level2">
+<h2>Get some predictions and make plots</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a>overall_abund_pct</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
 
 
-</section></section>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
